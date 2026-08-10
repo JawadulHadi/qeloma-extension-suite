@@ -1,0 +1,137 @@
+<div class="space-y-6">
+  <!-- Top Banner -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md space-y-4">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-sky-600/20 border border-sky-500/30 flex items-center justify-center text-sky-400">
+          <mat-icon>share</mat-icon>
+        </div>
+        <div>
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>Social Media Sharing Card Previewer</span>
+            <span class="px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 text-xs font-mono border border-sky-500/30">OpenGraph Meta Optimizer</span>
+          </h2>
+          <p class="text-xs text-slate-400">Tweak metadata and preview how the Qeloma suite cards appear when shared on Twitter (X) and LinkedIn.</p>
+        </div>
+      </div>
+
+      <!-- Platform Selector Buttons -->
+      <div class="flex items-center gap-2">
+        <button 
+          (click)="setPlatform('twitter')"
+          [class.bg-sky-600]="platform() === 'twitter'"
+          [class.text-white]="platform() === 'twitter'"
+          [class.bg-slate-900]="platform() !== 'twitter'"
+          [class.text-slate-400]="platform() !== 'twitter'"
+          class="px-3.5 py-2 rounded-xl text-xs font-semibold font-mono transition-all cursor-pointer flex items-center gap-1.5 border border-slate-800">
+          <mat-icon class="text-sm">flutter_dash</mat-icon>
+          <span>Twitter / X</span>
+        </button>
+        <button 
+          (click)="setPlatform('linkedin')"
+          [class.bg-indigo-600]="platform() === 'linkedin'"
+          [class.text-white]="platform() === 'linkedin'"
+          [class.bg-slate-900]="platform() !== 'linkedin'"
+          [class.text-slate-400]="platform() !== 'linkedin'"
+          class="px-3.5 py-2 rounded-xl text-xs font-semibold font-mono transition-all cursor-pointer flex items-center gap-1.5 border border-slate-800">
+          <mat-icon class="text-sm">work</mat-icon>
+          <span>LinkedIn</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Inputs & Live Preview Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Form Input Controls -->
+      <div class="lg:col-span-6 space-y-4">
+        <div class="space-y-1">
+          <label for="social-card-title-input" class="text-xs font-mono text-slate-300 font-semibold block">Social Title (og:title)</label>
+          <input 
+            id="social-card-title-input"
+            [formControl]="titleControl"
+            type="text" 
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-sky-500 shadow-inner" />
+        </div>
+
+        <div class="space-y-1">
+          <label for="social-card-desc-input" class="text-xs font-mono text-slate-300 font-semibold block">Description (og:description)</label>
+          <textarea 
+            id="social-card-desc-input"
+            [formControl]="descriptionControl"
+            rows="3"
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-sky-500 shadow-inner leading-relaxed"></textarea>
+        </div>
+
+        <div class="space-y-1">
+          <label for="social-card-img-input" class="text-xs font-mono text-slate-300 font-semibold block">Preview Banner Image URL (og:image)</label>
+          <input 
+            id="social-card-img-input"
+            [formControl]="imageUrlControl"
+            type="text" 
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-300 focus:outline-none focus:border-sky-500 shadow-inner" />
+        </div>
+
+        <div class="space-y-1">
+          <label for="social-card-url-input" class="text-xs font-mono text-slate-300 font-semibold block">Canonical Site Domain (og:url)</label>
+          <input 
+            id="social-card-url-input"
+            [formControl]="siteUrlControl"
+            type="text" 
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-300 focus:outline-none focus:border-sky-500 shadow-inner" />
+        </div>
+      </div>
+
+      <!-- Live Interactive Card Preview -->
+      <div class="lg:col-span-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <span class="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">Live Platform Card Rendering</span>
+          <span class="text-[10px] font-mono text-sky-400 font-bold uppercase">{{ platform() }} Card</span>
+        </div>
+
+        <!-- Twitter Card View -->
+        @if (platform() === 'twitter') {
+          <div class="bg-black rounded-2xl border border-slate-800 overflow-hidden shadow-2xl max-w-lg mx-auto">
+            <div class="relative aspect-[1.91/1] overflow-hidden bg-slate-900">
+              <img [src]="imageUrlControl.value" alt="Preview Image" class="w-full h-full object-cover" referrerpolicy="no-referrer" />
+            </div>
+            <div class="p-3.5 space-y-1 bg-[#16181c]">
+              <p class="text-[11px] text-slate-400 font-sans truncate">{{ siteUrlControl.value }}</p>
+              <h4 class="text-sm font-bold text-white font-sans line-clamp-1">{{ titleControl.value }}</h4>
+              <p class="text-xs text-slate-400 font-sans line-clamp-2 leading-snug">{{ descriptionControl.value }}</p>
+            </div>
+          </div>
+        } @else {
+          <!-- LinkedIn Card View -->
+          <div class="bg-[#1d2226] rounded-2xl border border-slate-800 overflow-hidden shadow-2xl max-w-lg mx-auto">
+            <div class="relative aspect-[1.91/1] overflow-hidden bg-slate-900">
+              <img [src]="imageUrlControl.value" alt="Preview Image" class="w-full h-full object-cover" referrerpolicy="no-referrer" />
+            </div>
+            <div class="p-4 space-y-1 bg-[#1d2226]">
+              <h4 class="text-sm font-bold text-white font-sans line-clamp-1">{{ titleControl.value }}</h4>
+              <p class="text-xs text-slate-400 font-sans truncate">{{ siteUrlControl.value }}</p>
+            </div>
+          </div>
+        }
+
+        <!-- HTML OpenGraph Export Button -->
+        <div class="pt-2">
+          <button 
+            (click)="copyMetaTags()"
+            class="w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-mono text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md">
+            <mat-icon class="text-sm">code</mat-icon>
+            <span>{{ copiedMeta() ? 'Copied HTML Tags to Clipboard!' : 'Copy OpenGraph HTML Meta Tags' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generated HTML Tags Preview Box -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md space-y-3">
+    <div class="flex items-center justify-between">
+      <h3 class="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">Generated &lt;head&gt; HTML Snippet</h3>
+      <span class="text-[10px] text-slate-500 font-mono">Insert into index.html</span>
+    </div>
+    <pre class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-sky-200 font-mono text-xs overflow-x-auto leading-relaxed">{{ ogTagsHtml }}</pre>
+  </div>
+</div>

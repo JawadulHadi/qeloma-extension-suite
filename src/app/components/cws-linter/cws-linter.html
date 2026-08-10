@@ -1,0 +1,312 @@
+<div class="space-y-6">
+  <!-- Top Banner -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono border border-emerald-500/30 font-semibold">
+          Store Security Audit
+        </span>
+        <span class="text-xs text-slate-400">Chrome Web Store MV3 Compliance</span>
+      </div>
+      <h2 class="text-xl font-bold text-white">Chrome Web Store Manifest V3 Suite Tools</h2>
+      <p class="text-xs text-slate-400 max-w-2xl mt-1">
+        Audit extension manifests against store review security rules, generate MV3 boilerplates, and export complete compliance reports.
+      </p>
+    </div>
+
+    <!-- Generate Compliance Report & Preset Loaders -->
+    <div class="flex flex-wrap items-center gap-2">
+      <!-- Generate Compliance Report Button -->
+      <button 
+        (click)="downloadComplianceReport()"
+        class="px-4 py-2 bg-gradient-to-r from-emerald-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer shadow-md transition-all">
+        <mat-icon class="text-sm">assessment</mat-icon>
+        <span>Generate Compliance Report</span>
+      </button>
+
+      <div class="h-6 w-[1px] bg-slate-800 hidden sm:block"></div>
+
+      <button 
+        (click)="loadSample('green')"
+        class="px-3 py-1.5 bg-emerald-950/60 border border-emerald-500/40 hover:bg-emerald-900 text-emerald-300 rounded-xl text-xs font-semibold cursor-pointer shadow-sm">
+        Green Tier Sample
+      </button>
+      <button 
+        (click)="loadSample('amber')"
+        class="px-3 py-1.5 bg-amber-950/60 border border-amber-500/40 hover:bg-amber-900 text-amber-300 rounded-xl text-xs font-semibold cursor-pointer shadow-sm">
+        Amber Tier Sample
+      </button>
+    </div>
+  </div>
+
+  <!-- Sub-Tab Navigation Bar (Linter Auditor vs Manifest Factory) -->
+  <div class="flex bg-[#0f172a] p-1.5 rounded-2xl border border-slate-800 shadow-md font-mono text-xs font-bold max-w-md">
+    <button 
+      (click)="activeSubTab.set('linter')"
+      [class.bg-indigo-600]="activeSubTab() === 'linter'"
+      [class.text-white]="activeSubTab() === 'linter'"
+      [class.text-slate-400]="activeSubTab() !== 'linter'"
+      class="flex-1 py-2 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all">
+      <mat-icon class="text-sm">verified_user</mat-icon>
+      <span>CWS Security Auditor</span>
+    </button>
+
+    <button 
+      (click)="activeSubTab.set('factory')"
+      [class.bg-indigo-600]="activeSubTab() === 'factory'"
+      [class.text-white]="activeSubTab() === 'factory'"
+      [class.text-slate-400]="activeSubTab() !== 'factory'"
+      class="flex-1 py-2 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all">
+      <mat-icon class="text-sm">precision_manufacturing</mat-icon>
+      <span>Manifest Factory</span>
+    </button>
+  </div>
+
+  @if (activeSubTab() === 'factory') {
+    <app-manifest-factory />
+  } @else {
+
+
+  <!-- Quick Batch Extension Selector Bar -->
+  <div class="bg-[#0f172a] p-4 rounded-2xl border border-slate-800 shadow-md space-y-2">
+    <div class="flex items-center justify-between text-xs font-bold text-slate-300">
+      <span class="flex items-center gap-1.5">
+        <mat-icon class="text-indigo-400 text-sm">verified</mat-icon>
+        <span>Audit Monorepo Extensions (10 Implemented Tools)</span>
+      </span>
+      <span class="text-[10px] text-slate-400 font-mono">Lead Architect: Jawad-Ul-Hadi</span>
+    </div>
+    <div class="flex flex-wrap items-center gap-2 pt-1">
+      @for (ext of store.extensions(); track ext.id) {
+        <button 
+          (click)="lintExtension(ext.id)"
+          class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-xs text-indigo-400">{{ ext.icon }}</mat-icon>
+          <span>{{ ext.name }}</span>
+          <span 
+            [class.bg-emerald-500\/20]="ext.permissionTier === 'Green'"
+            [class.text-emerald-400]="ext.permissionTier === 'Green'"
+            [class.bg-amber-500\/20]="ext.permissionTier === 'Amber'"
+            [class.text-amber-300]="ext.permissionTier === 'Amber'"
+            class="text-[9px] font-mono px-1.5 py-0.2 rounded font-bold">
+            {{ ext.permissionTier }}
+          </span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Dynamic Compliance Check Level Configuration Panel -->
+  <div class="bg-[#0f172a] p-5 rounded-2xl border border-indigo-900/50 shadow-md space-y-3">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+      <div class="flex items-center gap-2">
+        <mat-icon class="text-amber-400 text-lg">tune</mat-icon>
+        <div>
+          <h3 class="text-sm font-bold text-white">Dynamic Manifest V3 Compliance Check Level</h3>
+          <p class="text-[11px] text-slate-400">Toggle linter rules to test specific Chrome Web Store policy compliance layers.</p>
+        </div>
+      </div>
+      <!-- Strict Toggle -->
+      <button 
+        (click)="toggleStrictMv3()"
+        [class.bg-indigo-600]="store.enforceMv3Strict()"
+        [class.bg-slate-800]="!store.enforceMv3Strict()"
+        class="px-3 py-1.5 rounded-xl text-xs font-bold text-white border border-indigo-500/30 flex items-center gap-2 transition-all cursor-pointer">
+        <mat-icon class="text-sm">{{ store.enforceMv3Strict() ? 'shield' : 'shield_moon' }}</mat-icon>
+        <span>Strict Remote Code Enforcer: {{ store.enforceMv3Strict() ? 'ON' : 'OFF' }}</span>
+      </button>
+    </div>
+
+    <!-- Check Level Buttons -->
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+      <button 
+        (click)="setCheckLevel('strict')"
+        [class.bg-indigo-600]="store.linterCheckLevel() === 'strict'"
+        [class.text-white]="store.linterCheckLevel() === 'strict'"
+        [class.bg-slate-900]="store.linterCheckLevel() !== 'strict'"
+        [class.text-slate-300]="store.linterCheckLevel() !== 'strict'"
+        class="p-2.5 rounded-xl border border-slate-800 hover:border-slate-700 text-xs font-medium text-left flex flex-col gap-1 transition-all cursor-pointer">
+        <span class="font-bold flex items-center gap-1">
+          <mat-icon class="text-sm text-amber-400">security</mat-icon>
+          Strict Security
+        </span>
+        <span class="text-[10px] text-slate-400">CSP & Host Perms</span>
+      </button>
+
+      <button 
+        (click)="setCheckLevel('fastTrack')"
+        [class.bg-indigo-600]="store.linterCheckLevel() === 'fastTrack'"
+        [class.text-white]="store.linterCheckLevel() === 'fastTrack'"
+        [class.bg-slate-900]="store.linterCheckLevel() !== 'fastTrack'"
+        [class.text-slate-300]="store.linterCheckLevel() !== 'fastTrack'"
+        class="p-2.5 rounded-xl border border-slate-800 hover:border-slate-700 text-xs font-medium text-left flex flex-col gap-1 transition-all cursor-pointer">
+        <span class="font-bold flex items-center gap-1">
+          <mat-icon class="text-sm text-emerald-400">bolt</mat-icon>
+          Fast-Track (&lt;24h)
+        </span>
+        <span class="text-[10px] text-slate-400">Green Tier Velocity</span>
+      </button>
+
+      <button 
+        (click)="setCheckLevel('privacy')"
+        [class.bg-indigo-600]="store.linterCheckLevel() === 'privacy'"
+        [class.text-white]="store.linterCheckLevel() === 'privacy'"
+        [class.bg-slate-900]="store.linterCheckLevel() !== 'privacy'"
+        [class.text-slate-300]="store.linterCheckLevel() !== 'privacy'"
+        class="p-2.5 rounded-xl border border-slate-800 hover:border-slate-700 text-xs font-medium text-left flex flex-col gap-1 transition-all cursor-pointer">
+        <span class="font-bold flex items-center gap-1">
+          <mat-icon class="text-sm text-indigo-400">lock</mat-icon>
+          Privacy Policy
+        </span>
+        <span class="text-[10px] text-slate-400">Storage & Cookies</span>
+      </button>
+
+      <button 
+        (click)="setCheckLevel('singlePurpose')"
+        [class.bg-indigo-600]="store.linterCheckLevel() === 'singlePurpose'"
+        [class.text-white]="store.linterCheckLevel() === 'singlePurpose'"
+        [class.bg-slate-900]="store.linterCheckLevel() !== 'singlePurpose'"
+        [class.text-slate-300]="store.linterCheckLevel() !== 'singlePurpose'"
+        class="p-2.5 rounded-xl border border-slate-800 hover:border-slate-700 text-xs font-medium text-left flex flex-col gap-1 transition-all cursor-pointer">
+        <span class="font-bold flex items-center gap-1">
+          <mat-icon class="text-sm text-rose-400">target</mat-icon>
+          Single Purpose
+        </span>
+        <span class="text-[10px] text-slate-400">CWS Rule 2.2</span>
+      </button>
+
+      <button 
+        (click)="setCheckLevel('all')"
+        [class.bg-indigo-600]="store.linterCheckLevel() === 'all'"
+        [class.text-white]="store.linterCheckLevel() === 'all'"
+        [class.bg-slate-900]="store.linterCheckLevel() !== 'all'"
+        [class.text-slate-300]="store.linterCheckLevel() !== 'all'"
+        class="p-2.5 rounded-xl border border-slate-800 hover:border-slate-700 text-xs font-medium text-left flex flex-col gap-1 transition-all cursor-pointer">
+        <span class="font-bold flex items-center gap-1">
+          <mat-icon class="text-sm text-indigo-300">fact_check</mat-icon>
+          Full Audit
+        </span>
+        <span class="text-[10px] text-slate-400">All Policy Rules</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Linter Interface -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    
+    <!-- Left Input Editor -->
+    <div class="lg:col-span-6 bg-[#0f172a] p-4 rounded-2xl border border-slate-800 shadow-md space-y-3">
+      <div class="flex items-center justify-between">
+        <label for="manifest-json-input" class="text-xs font-bold uppercase text-slate-300 tracking-wider flex items-center gap-2">
+          <mat-icon class="text-sm text-indigo-400">code</mat-icon>
+          <span>Manifest V3 JSON Input</span>
+        </label>
+        <span class="text-[10px] text-slate-400">Paste manifest.json snippet</span>
+      </div>
+
+      <textarea 
+        id="manifest-json-input"
+        [formControl]="jsonInput"
+        rows="16"
+        class="w-full bg-[#090d16] border border-slate-800 rounded-xl p-3 font-mono text-xs text-slate-200 focus:outline-none focus:border-indigo-500 leading-relaxed resize-none"></textarea>
+
+      <div class="flex items-center gap-2">
+        <button 
+          (click)="runLinter()"
+          [disabled]="store.linterLoading()"
+          class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-sm transition-all">
+          @if (store.linterLoading()) {
+            <mat-icon class="animate-spin text-sm">sync</mat-icon>
+            <span>Auditing Manifest...</span>
+          } @else {
+            <mat-icon class="text-sm">verified</mat-icon>
+            <span>Run CWS Security Audit</span>
+          }
+        </button>
+
+        <button 
+          (click)="downloadManifest()"
+          class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-semibold flex items-center gap-2 cursor-pointer border border-slate-700 shadow-sm transition-all"
+          title="Export validated manifest.json file">
+          <mat-icon class="text-sm text-emerald-400">download</mat-icon>
+          <span>Download Manifest Config</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Audit Results Card -->
+    <div class="lg:col-span-6 bg-[#0f172a] p-5 rounded-2xl border border-slate-800 shadow-md space-y-4">
+      <h3 class="text-xs font-bold uppercase text-slate-400 tracking-wider flex items-center justify-between">
+        <span>Audit Report & Store Score</span>
+        <mat-icon class="text-sm text-indigo-400">analytics</mat-icon>
+      </h3>
+
+      @if (store.linterResult()) {
+        @let res = store.linterResult()!;
+        <!-- Tier Banner -->
+        <div 
+          [class.bg-emerald-950/40]="res.permissionTier === 'Green'"
+          [class.border-emerald-500/40]="res.permissionTier === 'Green'"
+          [class.bg-amber-950/40]="res.permissionTier === 'Amber'"
+          [class.border-amber-500/40]="res.permissionTier === 'Amber'"
+          [class.bg-red-950/40]="res.permissionTier === 'Red'"
+          [class.border-red-500/40]="res.permissionTier === 'Red'"
+          class="p-4 rounded-xl border space-y-2">
+          
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Permission Tier:</span>
+            <span 
+              [class.text-emerald-400]="res.permissionTier === 'Green'"
+              [class.text-amber-400]="res.permissionTier === 'Amber'"
+              [class.text-red-400]="res.permissionTier === 'Red'"
+              class="font-mono font-extrabold text-sm px-2.5 py-0.5 rounded bg-black/40 border border-white/10">
+              {{ res.permissionTier }} Tier
+            </span>
+          </div>
+
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400">Estimated Review Time:</span>
+            <span class="font-bold text-white">{{ res.reviewTimeEstimate }}</span>
+          </div>
+        </div>
+
+        <!-- Issue Checklist -->
+        <div class="space-y-2">
+          <span class="text-xs font-medium text-slate-300 block">Security Audit Findings:</span>
+          <div class="space-y-2 max-h-72 overflow-y-auto pr-1">
+            @for (issue of res.issues; track issue.message) {
+              <div 
+                [class.border-red-500/30]="issue.level === 'error'"
+                [class.bg-red-950/20]="issue.level === 'error'"
+                [class.border-amber-500/30]="issue.level === 'warning'"
+                [class.bg-amber-950/20]="issue.level === 'warning'"
+                [class.border-sky-500/30]="issue.level === 'info'"
+                [class.bg-sky-950/20]="issue.level === 'info'"
+                class="p-3 rounded-xl border text-xs space-y-1">
+                
+                <div class="flex items-center justify-between font-bold">
+                  <span 
+                    [class.text-red-400]="issue.level === 'error'"
+                    [class.text-amber-400]="issue.level === 'warning'"
+                    [class.text-sky-300]="issue.level === 'info'"
+                    class="uppercase text-[10px] tracking-wider font-mono">
+                    {{ issue.level }} · Field: {{ issue.field }}
+                  </span>
+                </div>
+                <p class="text-slate-200 text-[11px] leading-relaxed">{{ issue.message }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      } @else {
+        <!-- Empty Placeholder -->
+        <div class="p-8 text-center text-slate-500 space-y-2 border border-dashed border-slate-800 rounded-xl">
+          <mat-icon class="text-3xl text-slate-600">verified</mat-icon>
+          <p class="text-xs">Click 'Run CWS Security Audit' to check manifest compliance</p>
+        </div>
+      }
+    </div>
+
+  </div>
+  }
+</div>

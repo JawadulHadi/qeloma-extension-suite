@@ -1,0 +1,105 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 320px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0b0f19;
+  color: #e2e8f0;
+}
+
+#app {
+  padding: 14px 16px;
+}
+
+h1 {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  color: #fde68a;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 13px;
+  border-bottom: 1px solid #1e293b;
+  margin-bottom: 10px;
+}
+
+.slider-row {
+  margin-bottom: 12px;
+}
+
+.slider-row label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.slider-row input[type='range'] {
+  width: 100%;
+}
+
+.section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin: 14px 0 6px;
+}
+
+.whitelist-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: #1e293b;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.whitelist-row button {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.secondary-btn {
+  width: 100%;
+  background: #334155;
+  border: none;
+  color: #e2e8f0;
+  font-weight: 600;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.empty {
+  font-size: 11px;
+  color: #64748b;
+}
+
+input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+}

@@ -1,0 +1,135 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 340px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+#app {
+  padding: 14px 16px;
+}
+
+h1 {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  color: #a78bfa;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.actions button {
+  flex: 1;
+  background: #334155;
+  border: 1px solid #475569;
+  color: #e2e8f0;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: #475569;
+}
+
+.actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.swatch-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #1e293b;
+  margin-bottom: 6px;
+}
+
+.swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.swatch-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.swatch-hex {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.swatch-meta {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.copy-btn {
+  background: none;
+  border: 1px solid #475569;
+  color: #cbd5e1;
+  border-radius: 4px;
+  font-size: 10px;
+  padding: 3px 6px;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: #334155;
+}
+
+.section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin: 10px 0 6px;
+}
+
+.empty {
+  font-size: 11px;
+  color: #64748b;
+  padding: 8px 0;
+}
+
+.toast {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #10b981;
+  color: white;
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+}

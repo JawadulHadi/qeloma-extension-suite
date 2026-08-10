@@ -1,0 +1,131 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 380px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+#app {
+  padding: 14px 16px;
+  max-height: 580px;
+  overflow-y: auto;
+}
+
+h1 {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  color: #fb923c;
+}
+
+.section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin: 14px 0 6px;
+}
+
+.card {
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+
+.og-card {
+  background: #1e293b;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.og-card img {
+  width: 100%;
+  max-height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+.og-card .og-body {
+  padding: 10px 12px;
+}
+
+.og-title {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.og-desc {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.heading-row {
+  font-family: monospace;
+  font-size: 11px;
+  padding: 2px 0;
+  color: #e2e8f0;
+}
+
+.jsonld {
+  background: #020617;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 10px;
+  white-space: pre-wrap;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.empty {
+  font-size: 11px;
+  color: #64748b;
+}
+
+button.copy-report {
+  width: 100%;
+  background: #ea580c;
+  border: none;
+  color: white;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 14px;
+}
+
+button.copy-report:hover {
+  background: #c2410c;
+}
+
+.toast {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #10b981;
+  color: white;
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.toast.show {
+  opacity: 1;
+}

@@ -1,0 +1,154 @@
+<div class="space-y-6">
+  <!-- Top Community Metrics & Lead Architect Hero Header -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-6">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 text-xs font-mono border border-indigo-500/30 font-semibold">
+            Open-Source Community & Social Proof
+          </span>
+          <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] font-mono border border-slate-700 font-bold">
+            Architect: Jawad-Ul-Hadi
+          </span>
+        </div>
+        <h2 class="text-xl font-bold text-white">Qeloma Suite Community Metrics & Developer Trust</h2>
+        <p class="text-xs text-slate-400 max-w-2xl">
+          Empowering thousands of developers and power users with clean, single-purpose Manifest V3 browser extensions.
+        </p>
+      </div>
+
+      <!-- Star Button CTA -->
+      <button 
+        (click)="toggleStar()"
+        [class.bg-amber-500]="store.hasStarred()"
+        [class.hover:bg-amber-400]="store.hasStarred()"
+        [class.text-slate-950]="store.hasStarred()"
+        [class.bg-slate-900]="!store.hasStarred()"
+        [class.hover:bg-slate-800]="!store.hasStarred()"
+        [class.text-slate-200]="!store.hasStarred()"
+        class="px-4 py-2.5 rounded-xl border border-slate-700 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg shrink-0">
+        <mat-icon [class.text-amber-300]="!store.hasStarred()" class="text-base">
+          {{ store.hasStarred() ? 'star' : 'star_outline' }}
+        </mat-icon>
+        <span>{{ store.hasStarred() ? 'Starred on GitHub!' : 'Star on GitHub' }}</span>
+        <span class="px-2 py-0.5 rounded bg-slate-800/80 text-amber-400 font-mono text-[11px]">
+          {{ store.githubStars() }}
+        </span>
+      </button>
+    </div>
+
+    <!-- Live Community Metrics Grid Counters -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-800/80">
+      <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 text-center space-y-1">
+        <div class="text-xs text-slate-400 uppercase tracking-wide font-semibold">Active Installs</div>
+        <div class="text-2xl font-extrabold text-emerald-400 font-mono">
+          {{ store.activeInstalls().toLocaleString() }}+
+        </div>
+        <div class="text-[10px] text-slate-400">Chrome Web Store & Edge</div>
+      </div>
+
+      <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 text-center space-y-1">
+        <div class="text-xs text-slate-400 uppercase tracking-wide font-semibold">GitHub Stars</div>
+        <div class="text-2xl font-extrabold text-amber-400 font-mono">
+          {{ store.githubStars().toLocaleString() }} ⭐
+        </div>
+        <div class="text-[10px] text-slate-400">Open-Source Monorepo</div>
+      </div>
+
+      <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 text-center space-y-1">
+        <div class="text-xs text-slate-400 uppercase tracking-wide font-semibold">GitHub Forks</div>
+        <div class="text-2xl font-extrabold text-indigo-300 font-mono">
+          {{ store.githubForks() }} 🍴
+        </div>
+        <div class="text-[10px] text-slate-400">Developer Contributions</div>
+      </div>
+
+      <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 text-center space-y-1">
+        <div class="text-xs text-slate-400 uppercase tracking-wide font-semibold">MV3 Compliance</div>
+        <div class="text-2xl font-extrabold text-white font-mono">100% Green</div>
+        <div class="text-[10px] text-emerald-400 font-bold">&lt; 24h Fast-Track Velocity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Developer Testimonials Grid -->
+  <div class="space-y-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <mat-icon class="text-indigo-400">rate_review</mat-icon>
+          <span>Developer & Architect Testimonials</span>
+        </h3>
+        <p class="text-xs text-slate-400">What extension developers and tech leads say about the Qeloma monorepo setup.</p>
+      </div>
+      <button 
+        (click)="exploreMonorepo()"
+        class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 cursor-pointer">
+        <span>Explore Monorepo</span>
+        <mat-icon class="text-xs">arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      @for (item of store.testimonials(); track item.name) {
+        <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <!-- Stars & Badge -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center text-amber-400 text-xs">
+                @for (s of [1,2,3,4,5]; track s) {
+                  <mat-icon class="text-sm">star</mat-icon>
+                }
+              </div>
+              <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 text-[10px] font-mono font-bold border border-indigo-500/30">
+                {{ item.highlight }}
+              </span>
+            </div>
+
+            <!-- Quote -->
+            <p class="text-xs text-slate-300 leading-relaxed italic">
+              "{{ item.quote }}"
+            </p>
+          </div>
+
+          <!-- Author Info -->
+          <div class="pt-3 border-t border-slate-800/80 flex items-center gap-3">
+            <img [src]="item.avatar" [alt]="item.name" class="w-9 h-9 rounded-full border border-indigo-500/40 object-cover" referrerpolicy="no-referrer" />
+            <div>
+              <div class="text-xs font-bold text-white">{{ item.name }}</div>
+              <div class="text-[10px] text-slate-400">{{ item.role }}</div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Call to Action Banner -->
+  <div class="bg-gradient-to-r from-indigo-950/80 via-slate-900 to-slate-950 p-6 rounded-2xl border border-indigo-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="space-y-1">
+      <h3 class="text-sm font-bold text-white flex items-center gap-2">
+        <mat-icon class="text-amber-400">rocket_launch</mat-icon>
+        <span>Build & Publish Your Own MV3 Extension Suite</span>
+      </h3>
+      <p class="text-xs text-slate-400">
+        Clone the Qeloma pnpm monorepo architecture, run the CWS Manifest V3 linter, and deploy to millions.
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2 shrink-0">
+      <button 
+        (click)="exploreMonorepo()"
+        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow">
+        <mat-icon class="text-xs">folder_zip</mat-icon>
+        <span>View WXT Source Code</span>
+      </button>
+      <button 
+        (click)="viewReleases()"
+        class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer">
+        <mat-icon class="text-xs text-emerald-400">label</mat-icon>
+        <span>View Release Tags</span>
+      </button>
+    </div>
+  </div>
+</div>

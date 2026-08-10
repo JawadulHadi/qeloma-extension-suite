@@ -1,0 +1,85 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 300px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+#app {
+  padding: 14px 16px;
+}
+
+h1 {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  color: #d6c8a8;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+.field label {
+  display: block;
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+select,
+input[type='range'] {
+  width: 100%;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.theme-picker {
+  display: flex;
+  gap: 6px;
+}
+
+.theme-picker button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.theme-picker button.selected {
+  outline: 2px solid #78716c;
+}
+
+.primary-btn {
+  width: 100%;
+  background: #78716c;
+  border: none;
+  color: white;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.primary-btn:hover {
+  background: #57534e;
+}

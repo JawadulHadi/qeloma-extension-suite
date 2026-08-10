@@ -1,0 +1,280 @@
+<div class="space-y-6">
+  <!-- Header Banner -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div class="space-y-2">
+      <div class="flex items-center gap-2">
+        <app-qeloma-logo size="md"></app-qeloma-logo>
+        <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 text-xs font-semibold">
+          Official Publishing Architecture Guide
+        </span>
+      </div>
+      <h2 class="text-xl font-bold text-white tracking-tight">Chrome Web Store Publishing Strategy & Architecture Guide</h2>
+      <p class="text-xs text-slate-400 max-w-3xl leading-relaxed">
+        Comprehensive blueprint for releasing all 10 Qeloma extensions on the Chrome Web Store. Explains how to leverage 1 pnpm monorepo to generate 10 individual, distinct CWS store listings with unique App IDs.
+      </p>
+    </div>
+
+    <button 
+      (click)="store.activeView.set('admin')"
+      class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-2 shadow-sm transition-all cursor-pointer whitespace-nowrap">
+      <mat-icon class="text-base">dashboard</mat-icon>
+      <span>Open Publisher Console</span>
+    </button>
+  </div>
+
+  <!-- Key Architecture Clarification Alert -->
+  <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 p-5 rounded-2xl text-xs space-y-3">
+    <div class="flex items-center gap-2 text-amber-300 font-bold text-sm">
+      <mat-icon class="text-amber-400">gavel</mat-icon>
+      <span>Critical Architectural Mandate: 1 Store Listing per Extension</span>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-300 leading-relaxed">
+      <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+        <div class="font-bold text-white flex items-center gap-1.5">
+          <mat-icon class="text-red-400 text-sm">cancel</mat-icon>
+          <span>What CANNOT be done</span>
+        </div>
+        <p>
+          You **cannot** bundle all 10 tools into a single Chrome extension ZIP and ask users to install one massive 50MB extension. Chrome Web Store policies mandate **Single Purpose Policy** (Rule 2.2) and will reject extensions that attempt multi-tool bloat.
+        </p>
+      </div>
+
+      <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+        <div class="font-bold text-emerald-400 flex items-center gap-1.5">
+          <mat-icon class="text-emerald-400 text-sm">check_circle</mat-icon>
+          <span>What MUST be done (The Qeloma Solution)</span>
+        </div>
+        <p>
+          Each of the 10 extensions gets its **own store listing and unique App ID** (e.g. <code class="text-indigo-300 font-mono">pfhkja...</code>). Maintain them cleanly in **1 pnpm Monorepo**, and build 10 lightweight ZIP files to upload to your single $5 Chrome Developer Account!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Sub-Tabs -->
+  <div class="flex items-center gap-2 border-b border-slate-800 pb-3 text-xs">
+    <button 
+      (click)="activeTab.set('listings')"
+      [class.bg-indigo-600]="activeTab() === 'listings'"
+      [class.text-white]="activeTab() === 'listings'"
+      [class.bg-slate-800]="activeTab() !== 'listings'"
+      [class.text-slate-400]="activeTab() !== 'listings'"
+      class="px-4 py-2 rounded-xl font-semibold transition-all cursor-pointer flex items-center gap-1.5">
+      <mat-icon class="text-sm">storefront</mat-icon>
+      <span>1. Store Listings & App IDs</span>
+    </button>
+
+    <button 
+      (click)="activeTab.set('assets')"
+      [class.bg-indigo-600]="activeTab() === 'assets'"
+      [class.text-white]="activeTab() === 'assets'"
+      [class.bg-slate-800]="activeTab() !== 'assets'"
+      [class.text-slate-400]="activeTab() !== 'assets'"
+      class="px-4 py-2 rounded-xl font-semibold transition-all cursor-pointer flex items-center gap-1.5">
+      <mat-icon class="text-sm">image</mat-icon>
+      <span>2. Graphic Assets & Branding</span>
+    </button>
+
+    <button 
+      (click)="activeTab.set('policies')"
+      [class.bg-indigo-600]="activeTab() === 'policies'"
+      [class.text-white]="activeTab() === 'policies'"
+      [class.bg-slate-800]="activeTab() !== 'policies'"
+      [class.text-slate-400]="activeTab() !== 'policies'"
+      class="px-4 py-2 rounded-xl font-semibold transition-all cursor-pointer flex items-center gap-1.5">
+      <mat-icon class="text-sm">security</mat-icon>
+      <span>3. MV3 & Permission Tiers</span>
+    </button>
+
+    <button 
+      (click)="activeTab.set('monorepo')"
+      [class.bg-indigo-600]="activeTab() === 'monorepo'"
+      [class.text-white]="activeTab() === 'monorepo'"
+      [class.bg-slate-800]="activeTab() !== 'monorepo'"
+      [class.text-slate-400]="activeTab() !== 'monorepo'"
+      class="px-4 py-2 rounded-xl font-semibold transition-all cursor-pointer flex items-center gap-1.5">
+      <mat-icon class="text-sm">code</mat-icon>
+      <span>4. Monorepo Build Pipeline</span>
+    </button>
+  </div>
+
+  <!-- Tab 1: Store Listings & App IDs -->
+  @if (activeTab() === 'listings') {
+    <div class="space-y-4">
+      <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-800 space-y-3">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <mat-icon class="text-indigo-400">link</mat-icon>
+          <span>10 Extensions = 10 Unique Chrome Store URLs & Unique App IDs</span>
+        </h3>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          When you upload a ZIP package to the Google Chrome Developer Dashboard, Google assigns a 32-character alpha hash as the extension's unique App ID. Below is the exact URL schema for each Qeloma product:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+          @for (ext of store.extensions(); track ext.id) {
+            <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-800 text-xs space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 font-bold text-white">
+                  <mat-icon class="text-sm text-indigo-400">{{ ext.icon }}</mat-icon>
+                  <span>{{ ext.name }}</span>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
+                  ID: qeloma-{{ ext.id }}
+                </span>
+              </div>
+              <div class="bg-slate-950 p-2 rounded border border-slate-800 font-mono text-[10px] text-slate-400 truncate">
+                https://chromewebstore.google.com/detail/{{ ext.id }}/[32-char-app-id]
+              </div>
+              <div class="text-[11px] text-slate-300 flex items-center justify-between pt-1">
+                <span>Category: <strong class="text-white">{{ ext.category }}</strong></span>
+                <span class="text-emerald-400 font-semibold">{{ ext.permissionTier }} Tier</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Tab 2: Graphic Assets & Branding -->
+  @if (activeTab() === 'assets') {
+    <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-800 space-y-4">
+      <h3 class="text-sm font-bold text-white flex items-center gap-2">
+        <mat-icon class="text-indigo-400">collections</mat-icon>
+        <span>Required Chrome Web Store Graphic Assets for Each Extension</span>
+      </h3>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Google requires specific dimensional icons and promo images for every listing. Here are the required resolutions and formatting instructions:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center gap-2 text-indigo-400 font-bold">
+            <mat-icon>crop_square</mat-icon>
+            <span>Extension Icons (PNG)</span>
+          </div>
+          <ul class="text-slate-300 space-y-1 list-disc list-inside">
+            <li><strong class="text-white">128x128 px</strong>: Store listing primary icon</li>
+            <li><strong class="text-white">48x48 px</strong>: Chrome extensions management page</li>
+            <li><strong class="text-white">16x16 px</strong>: Browser toolbar favicon</li>
+            <li>Format: Transparent PNG with 96 DPI</li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center gap-2 text-emerald-400 font-bold">
+            <mat-icon>aspect_ratio</mat-icon>
+            <span>Store Screenshots (PNG/JPEG)</span>
+          </div>
+          <ul class="text-slate-300 space-y-1 list-disc list-inside">
+            <li>Resolution: <strong class="text-white">1280x800 px</strong> or 640x400 px</li>
+            <li>Minimum 1, Maximum 5 screenshots</li>
+            <li>Must display the extension in action</li>
+            <li>High-contrast slate/indigo theme matching Qeloma brand</li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold">
+            <mat-icon>panorama</mat-icon>
+            <span>Marquee Promotional Banner</span>
+          </div>
+          <ul class="text-slate-300 space-y-1 list-disc list-inside">
+            <li>Small Tile: <strong class="text-white">440x280 px</strong></li>
+            <li>Marquee: <strong class="text-white">1400x560 px</strong> (optional featured banner)</li>
+            <li>Clean vector logo + key value proposition</li>
+            <li>No promotional text or price claims</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Tab 3: MV3 & Permission Tiers -->
+  @if (activeTab() === 'policies') {
+    <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-800 space-y-4 text-xs">
+      <h3 class="text-sm font-bold text-white flex items-center gap-2">
+        <mat-icon class="text-indigo-400">policy</mat-icon>
+        <span>Manifest V3 Safety, Review Speed & Permission Tiers</span>
+      </h3>
+      <p class="text-slate-300 leading-relaxed">
+        Chrome Web Store review times depend heavily on the requested MV3 permissions. We split the 10 Qeloma tools into 2 permission buckets to maximize fast reviews:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-slate-900 p-4 rounded-xl border border-emerald-500/30 space-y-2">
+          <div class="flex items-center justify-between text-emerald-400 font-bold">
+            <span class="flex items-center gap-1.5">
+              <mat-icon>flash_on</mat-icon>
+              <span>Green Permission Tier (Fast Track)</span>
+            </span>
+            <span class="text-[10px] bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+              &lt; 24h Review
+            </span>
+          </div>
+          <p class="text-slate-300">
+            Permissions used: <code class="text-emerald-300 font-mono">activeTab</code>, <code class="text-emerald-300 font-mono">storage</code>, <code class="text-emerald-300 font-mono">contextMenus</code>.
+          </p>
+          <p class="text-slate-400">
+            These tools (e.g., Qeloma Shot, Reader, Inspect) do NOT require persistent host permissions, enabling automated/fast review within hours!
+          </p>
+        </div>
+
+        <div class="bg-slate-900 p-4 rounded-xl border border-amber-500/30 space-y-2">
+          <div class="flex items-center justify-between text-amber-300 font-bold">
+            <span class="flex items-center gap-1.5">
+              <mat-icon>verified</mat-icon>
+              <span>Amber Permission Tier (Standard Review)</span>
+            </span>
+            <span class="text-[10px] bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+              1 - 2 Days Review
+            </span>
+          </div>
+          <p class="text-slate-300">
+            Permissions used: <code class="text-amber-300 font-mono">scripting</code>, <code class="text-amber-300 font-mono">tabs</code>, <code class="text-amber-300 font-mono">offscreen</code>, <code class="text-amber-300 font-mono">webNavigation</code>.
+          </p>
+          <p class="text-slate-400">
+            These tools require human review for DOM modification or tab listening. They strictly adhere to minimal privilege principles.
+          </p>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Tab 4: Monorepo Build Pipeline -->
+  @if (activeTab() === 'monorepo') {
+    <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-800 space-y-4 text-xs">
+      <h3 class="text-sm font-bold text-white flex items-center gap-2">
+        <mat-icon class="text-indigo-400">terminal</mat-icon>
+        <span>pnpm Monorepo CLI Workflow for Building 10 ZIP Packages</span>
+      </h3>
+      <p class="text-slate-300 leading-relaxed">
+        With our WXT monorepo setup, you can build, lint, and package all 10 Chrome extensions with simple, high-speed terminal commands:
+      </p>
+
+      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono space-y-3">
+        <div>
+          <span class="text-slate-500"># 1. Install dependencies across all 10 extension workspaces</span>
+          <div class="text-indigo-300 font-bold">pnpm install</div>
+        </div>
+
+        <div>
+          <span class="text-slate-500"># 2. Build and generate production ZIP files for ALL 10 extensions</span>
+          <div class="text-emerald-400 font-bold">pnpm build:all</div>
+        </div>
+
+        <div>
+          <span class="text-slate-500"># Output directory structure:</span>
+          <div class="text-slate-400">
+            dist/zip/<br>
+            ├── qeloma-shot-v1.0.0.zip<br>
+            ├── qeloma-palette-v1.0.0.zip<br>
+            ├── qeloma-reader-v1.0.0.zip<br>
+            ├── qeloma-night-v1.0.0.zip<br>
+            └── ... (10 total zip packages)
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

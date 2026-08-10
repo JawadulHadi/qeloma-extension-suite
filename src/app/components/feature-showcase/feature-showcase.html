@@ -1,0 +1,428 @@
+<div class="space-y-6">
+  <!-- Top Showcase Header -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div class="space-y-1">
+      <div class="flex items-center gap-2">
+        <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 text-xs font-mono border border-indigo-500/30 font-semibold">
+          Qeloma Interactive Showcase
+        </span>
+        <span class="text-xs text-slate-400">Auto-Playing Clip Simulators</span>
+        <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] font-mono border border-slate-700 font-bold">
+          Lead Architect: Jawad-Ul-Hadi
+        </span>
+      </div>
+      <h2 class="text-xl font-bold text-white">10 Manifest V3 Extensions Live Feature Demonstration</h2>
+      <p class="text-xs text-slate-400 max-w-2xl">
+        Watch auto-playing interactive video clips demonstrating each extension's single-purpose core utility in realistic active web environments.
+      </p>
+    </div>
+
+    <!-- Overall Quick Stats -->
+    <div class="flex items-center gap-3">
+      <div class="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-center">
+        <div class="text-xs text-slate-400">Total Tools</div>
+        <div class="text-sm font-bold text-white">10 MV3 Extensions</div>
+      </div>
+      <div class="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-center">
+        <div class="text-xs text-slate-400">CWS Fast-Track</div>
+        <div class="text-sm font-bold text-emerald-400">7 Green Tier</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Filter Bar & Tool Strip -->
+  <div class="bg-[#0f172a] p-4 rounded-2xl border border-slate-800 space-y-3 shadow-md">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+        <mat-icon class="text-indigo-400 text-sm">filter_list</mat-icon>
+        <span>Filter Extension Category</span>
+      </span>
+      <div class="flex flex-wrap items-center gap-1.5">
+        @for (cat of categories; track cat) {
+          <button 
+            (click)="setCategory(cat)"
+            [class.bg-indigo-600]="activeCategory() === cat"
+            [class.text-white]="activeCategory() === cat"
+            [class.bg-slate-900]="activeCategory() !== cat"
+            [class.text-slate-400]="activeCategory() !== cat"
+            class="px-3 py-1 rounded-lg text-xs font-medium transition-all hover:text-white cursor-pointer border border-slate-800">
+            {{ cat }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Extension Cards Selection Strip -->
+    <div class="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-2 pt-2 border-t border-slate-800/80">
+      @for (ext of filteredExtensions(); track ext.id) {
+        <button 
+          (click)="selectExtension(ext.id)"
+          [class.ring-2]="store.selectedExtensionId() === ext.id"
+          [class.ring-indigo-500]="store.selectedExtensionId() === ext.id"
+          [class.bg-slate-900]="store.selectedExtensionId() === ext.id"
+          [class.bg-slate-950\/60]="store.selectedExtensionId() !== ext.id"
+          class="p-2.5 rounded-xl border border-slate-800 hover:border-slate-700 text-left flex flex-col items-center text-center gap-1.5 transition-all cursor-pointer group">
+          <mat-icon [class.text-indigo-400]="store.selectedExtensionId() === ext.id" class="text-slate-400 group-hover:text-indigo-400 text-lg">
+            {{ ext.icon }}
+          </mat-icon>
+          <span class="text-[11px] font-bold text-slate-200 truncate w-full">{{ ext.shortName }}</span>
+          <span 
+            [class.text-emerald-400]="ext.permissionTier === 'Green'"
+            [class.text-amber-300]="ext.permissionTier === 'Amber'"
+            class="text-[9px] font-mono px-1 py-0.2 rounded bg-slate-900 font-bold border border-slate-800">
+            {{ ext.permissionTier }}
+          </span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Main Active Feature Video Showcase Stage -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Left Column: Video Viewport Simulator Box (7 cols) -->
+    <div class="lg:col-span-7 bg-[#0f172a] rounded-2xl border border-slate-800 shadow-xl overflow-hidden flex flex-col">
+      <!-- Browser Address Bar Frame -->
+      <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
+          </div>
+          <span class="text-[11px] text-slate-400 font-mono pl-2">Chrome Tab Preview: {{ store.activeTab().domain }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/30 flex items-center gap-1 font-bold">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            LIVE VIDEO DEMO
+          </span>
+        </div>
+      </div>
+
+      <!-- Animated Video Content Stage -->
+      <div class="relative bg-slate-950 p-6 min-h-[360px] flex flex-col justify-between overflow-hidden">
+        
+        <!-- Video Canvas Background Visual according to Active Extension -->
+        @switch (store.selectedExtensionId()) {
+          @case ('shot') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                  <span>Target Page Area Selection</span>
+                  <span class="text-indigo-400 font-mono font-bold">Crop marquee: 1920 x 1080</span>
+                </div>
+                <!-- Animated Marquee Selection Overlay -->
+                <div class="relative h-44 bg-slate-800/80 rounded-lg border-2 border-dashed border-indigo-500 p-4 flex flex-col items-center justify-center gap-2 overflow-hidden">
+                  <div [class.scale-105]="currentStep() === 2" class="transition-all duration-500 flex flex-col items-center">
+                    <mat-icon class="text-indigo-400 text-4xl mb-1">crop_free</mat-icon>
+                    <span class="text-xs font-bold text-white">Element & Region Crop Active</span>
+                    <span class="text-[10px] text-slate-400">Click & Drag to capture area · Instant PNG download</span>
+                  </div>
+                  @if (currentStep() === 2) {
+                    <div class="absolute inset-0 bg-indigo-500/20 backdrop-blur-xs flex items-center justify-center">
+                      <div class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-lg flex items-center gap-1.5 animate-bounce">
+                        <mat-icon class="text-sm">check_circle</mat-icon>
+                        <span>Captured! High-Res PNG Saved</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+          @case ('focus') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-rose-400 font-bold flex items-center gap-1">
+                    <mat-icon class="text-sm">block</mat-icon> declarativeNetRequest Rule
+                  </span>
+                  <span class="text-xs text-slate-400 font-mono">twitter.com · Blocked</span>
+                </div>
+                <div class="p-6 bg-slate-950 rounded-lg border border-rose-900/50 text-center space-y-2 relative overflow-hidden">
+                  <mat-icon class="text-rose-500 text-3xl">security</mat-icon>
+                  <h4 class="text-sm font-bold text-white">Focus Shield Active</h4>
+                  <p class="text-xs text-slate-400">Distraction domain blocked by Qeloma Focus rule set.</p>
+                  <div class="pt-2 flex justify-center">
+                    <span class="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-full text-xs font-mono border border-amber-500/30">
+                      Pomodoro Session: 18:42 Remaining
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('night') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                  <span>Zero-Flicker CSS Dark Restyling</span>
+                  <span class="text-amber-400 font-mono font-bold">Blue Light Filter: 35%</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="p-4 bg-white text-slate-900 rounded-lg text-xs space-y-1 opacity-40">
+                    <span class="font-bold">Original Light Site</span>
+                    <p class="text-[10px] text-slate-600">Harsh bright background, eye fatigue in low light.</p>
+                  </div>
+                  <div class="p-4 bg-slate-950 text-slate-100 rounded-lg border border-amber-500/40 text-xs space-y-1 shadow-lg">
+                    <span class="font-bold text-amber-300 flex items-center gap-1">
+                      <mat-icon class="text-sm">dark_mode</mat-icon> Qeloma Night Theme
+                    </span>
+                    <p class="text-[10px] text-slate-400">Warm dark background, balanced contrast & calm typography.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('clip-lens') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-indigo-400 font-bold flex items-center gap-1">
+                    <mat-icon class="text-sm">auto_awesome</mat-icon> Gemini 2.5 Flash Lens AI
+                  </span>
+                  <span class="text-xs text-slate-400 font-mono">On-Demand Selection</span>
+                </div>
+                <div class="p-4 bg-slate-950 rounded-lg border border-indigo-500/30 space-y-2">
+                  <div class="text-xs font-mono text-slate-400 bg-slate-900 p-2 rounded border border-slate-800">
+                    "Selected: Pnpm monorepo architecture with WXT Manifest V3 bindings..."
+                  </div>
+                  <div class="p-3 bg-indigo-950/60 rounded-lg border border-indigo-500/40 text-xs text-indigo-200 space-y-1">
+                    <div class="font-bold text-indigo-300 flex items-center gap-1">
+                      <mat-icon class="text-xs">bolt</mat-icon> AI Executive Summary:
+                    </div>
+                    <p class="text-[11px] text-slate-300">1. Fast package linking across extensions.<br>2. Zero code duplication with shared design system.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('volume') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-indigo-400 font-bold flex items-center gap-1">
+                    <mat-icon class="text-sm">graphic_eq</mat-icon> Web Audio GainNode Booster
+                  </span>
+                  <span class="text-xs font-mono text-indigo-300 font-bold">Gain: 450% Boost</span>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between text-xs text-slate-400">
+                    <span>Equalizer Spectrum</span>
+                    <span>Bass Boost + Stereo Balance</span>
+                  </div>
+                  <div class="h-16 bg-slate-950 rounded-lg border border-indigo-500/30 p-2 flex items-end justify-between gap-1">
+                    <div class="w-full bg-indigo-500 rounded-t h-[60%] animate-pulse"></div>
+                    <div class="w-full bg-indigo-500 rounded-t h-[90%] animate-pulse"></div>
+                    <div class="w-full bg-indigo-400 rounded-t h-[40%] animate-pulse"></div>
+                    <div class="w-full bg-indigo-600 rounded-t h-[80%] animate-pulse"></div>
+                    <div class="w-full bg-indigo-500 rounded-t h-[100%] animate-pulse"></div>
+                    <div class="w-full bg-indigo-400 rounded-t h-[70%] animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('timebox') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                  <span>Hourly Visual Task Grid</span>
+                  <span class="text-emerald-400 font-mono font-bold">5 Tasks Scheduled</span>
+                </div>
+                <div class="space-y-1.5 font-mono text-xs">
+                  <div class="p-2 bg-slate-800 rounded flex items-center justify-between border-l-4 border-indigo-500">
+                    <span>09:00 - 10:30 Monorepo Architecture</span>
+                    <span class="text-emerald-400 font-bold">✓ Done</span>
+                  </div>
+                  <div class="p-2 bg-slate-900 rounded flex items-center justify-between border-l-4 border-amber-500">
+                    <span>10:30 - 12:00 WXT MV3 Configs</span>
+                    <span class="text-amber-300 font-bold">In Progress</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('webtime') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                  <span>Zero-Telemetry Local Time Tracker</span>
+                  <span class="text-indigo-400 font-mono font-bold">Total Today: 3h 08m</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                    <span class="text-slate-400">github.com</span>
+                    <div class="text-sm font-bold text-indigo-300">1h 12m</div>
+                  </div>
+                  <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                    <span class="text-slate-400">developer.chrome.com</span>
+                    <div class="text-sm font-bold text-emerald-400">51m</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('inspect') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                  <span>On-Page SEO & Meta Audit</span>
+                  <span class="text-emerald-400 font-mono font-bold">JSON-LD Detected</span>
+                </div>
+                <div class="p-3 bg-slate-950 rounded border border-slate-800 text-xs font-mono space-y-1">
+                  <div class="text-indigo-300 font-bold">&lt;title&gt; Qeloma Extensions Suite &lt;/title&gt;</div>
+                  <div class="text-slate-400">H1: Manifest V3 Monorepo Architecture</div>
+                  <div class="text-amber-400">OG: Image & Description configured</div>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('reader') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                  <span>Distraction-Free Article Reader</span>
+                  <span class="text-amber-300 font-mono font-bold">Sepia Serif Mode</span>
+                </div>
+                <div class="p-4 bg-[#fbf0d9] text-amber-950 rounded-lg font-serif text-xs space-y-1 shadow">
+                  <h4 class="font-bold text-sm text-amber-900">Building High-Performance Browser Extensions</h4>
+                  <p class="text-[11px]">Decoupled single-purpose tools guarantee low memory overhead and rapid store approval...</p>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('palette') {
+            <div class="relative space-y-4 text-slate-300">
+              <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                  <span>Native EyeDropper API Pixel Color Sampler</span>
+                  <span class="text-indigo-400 font-mono font-bold">#C0532E Sampled</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-lg bg-[#C0532E] shadow border border-white/20"></div>
+                  <div class="text-xs font-mono">
+                    <div class="font-bold text-white">#C0532E</div>
+                    <div class="text-[10px] text-slate-400">Copied to Clipboard!</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        }
+
+        <!-- Video Player Control Bar -->
+        <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300">
+          <div class="flex items-center gap-2">
+            <button 
+              (click)="togglePlay()"
+              class="p-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg flex items-center transition-all cursor-pointer">
+              <mat-icon class="text-base">{{ isPlaying() ? 'pause' : 'play_arrow' }}</mat-icon>
+            </button>
+            <button 
+              (click)="restartVideo()"
+              class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg flex items-center transition-all cursor-pointer"
+              title="Restart Video">
+              <mat-icon class="text-base">replay</mat-icon>
+            </button>
+            <span class="font-mono text-[11px] text-slate-400">Step {{ currentStep() }} of 3</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-slate-400">Speed:</span>
+            <button 
+              (click)="setSpeed(1)"
+              [class.bg-indigo-600]="playbackSpeed() === 1"
+              [class.text-white]="playbackSpeed() === 1"
+              [class.bg-slate-800]="playbackSpeed() !== 1"
+              class="px-2 py-0.5 rounded text-[10px] font-mono cursor-pointer">
+              1x
+            </button>
+            <button 
+              (click)="setSpeed(1.5)"
+              [class.bg-indigo-600]="playbackSpeed() === 1.5"
+              [class.text-white]="playbackSpeed() === 1.5"
+              [class.bg-slate-800]="playbackSpeed() !== 1.5"
+              class="px-2 py-0.5 rounded text-[10px] font-mono cursor-pointer">
+              1.5x
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Interactive Details & Action Hub (5 cols) -->
+    <div class="lg:col-span-5 bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md flex flex-col justify-between space-y-6">
+      <div class="space-y-4">
+        <!-- Title & Badges -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <mat-icon class="text-indigo-400">{{ store.activeExtension().icon }}</mat-icon>
+              <h3 class="text-lg font-bold text-white">{{ store.activeExtension().name }}</h3>
+            </div>
+            <span 
+              [class.bg-emerald-500\/20]="store.activeExtension().permissionTier === 'Green'"
+              [class.text-emerald-400]="store.activeExtension().permissionTier === 'Green'"
+              [class.bg-amber-500\/20]="store.activeExtension().permissionTier === 'Amber'"
+              [class.text-amber-300]="store.activeExtension().permissionTier === 'Amber'"
+              class="px-2.5 py-1 rounded text-xs font-mono font-bold border border-current/30">
+              {{ store.activeExtension().permissionTier }} Tier
+            </span>
+          </div>
+          <p class="text-xs text-indigo-300 font-medium">{{ store.activeExtension().tagline }}</p>
+          <p class="text-xs text-slate-400 leading-relaxed">{{ store.activeExtension().description }}</p>
+        </div>
+
+        <!-- Technical Specs & CWS Tier -->
+        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2.5 text-xs">
+          <div class="flex justify-between items-center text-slate-300">
+            <span class="text-slate-400">CWS Review Velocity:</span>
+            <span class="font-bold text-emerald-400">{{ store.activeExtension().estimatedReviewTime }}</span>
+          </div>
+          <div class="flex justify-between items-center text-slate-300">
+            <span class="text-slate-400">Permissions Requested:</span>
+            <span class="font-mono text-slate-200 font-bold">
+              {{ store.activeExtension().permissions.join(', ') || 'None (Storage only)' }}
+            </span>
+          </div>
+          <div class="flex justify-between items-center text-slate-300">
+            <span class="text-slate-400">Single Purpose Utility:</span>
+            <span class="text-indigo-300 font-semibold">100% Rule 2.2 Compliant</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-2 pt-2">
+          <button 
+            (click)="launchSimulator(store.activeExtension().id)"
+            class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg">
+            <mat-icon class="text-sm">play_circle</mat-icon>
+            <span>Launch Live Interactive Simulator</span>
+          </button>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button 
+              (click)="auditManifest(store.activeExtension().id)"
+              class="py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+              <mat-icon class="text-xs text-amber-400">verified</mat-icon>
+              <span>Audit MV3 Manifest</span>
+            </button>
+            <button 
+              (click)="viewSource()"
+              class="py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+              <mat-icon class="text-xs text-indigo-400">folder_zip</mat-icon>
+              <span>View WXT Source</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footnote -->
+      <div class="p-3 bg-indigo-950/40 border border-indigo-500/20 rounded-xl text-[11px] text-indigo-200 flex items-center gap-2">
+        <mat-icon class="text-indigo-400 text-sm shrink-0">info</mat-icon>
+        <span>All 10 extensions are built with Manifest V3 and WXT, decoupled for instant zero-friction review.</span>
+      </div>
+    </div>
+  </div>
+</div>

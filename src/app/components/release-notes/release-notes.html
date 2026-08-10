@@ -1,0 +1,132 @@
+<div class="space-y-6">
+  <!-- Top Banner -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div class="space-y-1">
+      <div class="flex items-center gap-2">
+        <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 text-xs font-mono border border-indigo-500/30 font-semibold">
+          GitHub Release Tags & Changelogs
+        </span>
+        <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] font-mono border border-slate-700 font-bold">
+          Architect: Jawad-Ul-Hadi
+        </span>
+      </div>
+      <h2 class="text-xl font-bold text-white">Qeloma Extension Suite Release Notes</h2>
+      <p class="text-xs text-slate-400 max-w-2xl">
+        Official version history, Manifest V3 migration tags, and feature changelogs linked directly to monorepo GitHub releases.
+      </p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="flex items-center gap-3 shrink-0">
+      <div class="px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-center">
+        <div class="text-[10px] text-slate-400 uppercase font-semibold">Current Tag</div>
+        <div class="text-sm font-bold text-emerald-400 font-mono">v2.4.0 (Stable)</div>
+      </div>
+      <div class="px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-center">
+        <div class="text-[10px] text-slate-400 uppercase font-semibold">Target Spec</div>
+        <div class="text-sm font-bold text-indigo-300 font-mono">Chrome MV3</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extension Release Filter Strip -->
+  <div class="bg-[#0f172a] p-4 rounded-2xl border border-slate-800 shadow-md flex items-center gap-2 overflow-x-auto">
+    <span class="text-xs font-bold text-slate-300 flex items-center gap-1 shrink-0">
+      <mat-icon class="text-indigo-400 text-sm">label</mat-icon>
+      <span>Filter Release:</span>
+    </span>
+
+    <button 
+      (click)="setTagFilter('All')"
+      [class.bg-indigo-600]="selectedTagFilter() === 'All'"
+      [class.text-white]="selectedTagFilter() === 'All'"
+      [class.bg-slate-900]="selectedTagFilter() !== 'All'"
+      [class.text-slate-400]="selectedTagFilter() !== 'All'"
+      class="px-3 py-1 rounded-lg text-xs font-medium cursor-pointer border border-slate-800 transition-all shrink-0">
+      All Releases
+    </button>
+
+    @for (ext of store.extensions(); track ext.id) {
+      <button 
+        (click)="setTagFilter(ext.id)"
+        [class.bg-indigo-600]="selectedTagFilter() === ext.id"
+        [class.text-white]="selectedTagFilter() === ext.id"
+        [class.bg-slate-900]="selectedTagFilter() !== ext.id"
+        [class.text-slate-400]="selectedTagFilter() !== ext.id"
+        class="px-3 py-1 rounded-lg text-xs font-medium cursor-pointer border border-slate-800 transition-all shrink-0 flex items-center gap-1">
+        <mat-icon class="text-xs">{{ ext.icon }}</mat-icon>
+        <span>{{ ext.shortName }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Release List Timeline -->
+  <div class="space-y-4">
+    @for (rel of filteredReleases(); track rel.version) {
+      <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md space-y-4">
+        <!-- Release Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-base font-bold text-white font-mono">{{ rel.version }}</span>
+              <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold border border-indigo-500/30">
+                {{ rel.tag }}
+              </span>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">
+                {{ rel.badge }}
+              </span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-200">{{ rel.title }}</h3>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs text-slate-400 font-mono">
+            <span>{{ rel.date }}</span>
+            <span>•</span>
+            <span class="text-indigo-400">commit {{ rel.commitHash }}</span>
+            <span>•</span>
+            <span class="text-slate-300 font-semibold">{{ rel.author }}</span>
+          </div>
+        </div>
+
+        <!-- Extension Tagged & Changelog List -->
+        <div class="space-y-2">
+          <div class="text-xs text-slate-400 font-medium">
+            Extension Target: <span class="text-indigo-300 font-bold">{{ rel.extensionName }}</span>
+          </div>
+
+          <ul class="space-y-1.5 pl-2">
+            @for (change of rel.changes; track change) {
+              <li class="flex items-start gap-2 text-xs text-slate-300">
+                <mat-icon class="text-emerald-400 text-sm shrink-0 mt-0.5">check_circle_outline</mat-icon>
+                <span>{{ change }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <!-- Release Footer Actions -->
+        <div class="pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-2 text-slate-400">
+            <mat-icon class="text-xs text-indigo-400">code</mat-icon>
+            <span>Verified against Chrome Web Store Manifest V3 guidelines</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button 
+              (click)="testInSimulator(rel.extensionId)"
+              class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-xl font-medium flex items-center gap-1 transition-all cursor-pointer">
+              <mat-icon class="text-xs text-indigo-400">play_circle</mat-icon>
+              <span>Test in Simulator</span>
+            </button>
+            <button 
+              (click)="downloadReleaseZip(rel.extensionId)"
+              class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold flex items-center gap-1 transition-all cursor-pointer shadow">
+              <mat-icon class="text-xs">download</mat-icon>
+              <span>Download Release Zip</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

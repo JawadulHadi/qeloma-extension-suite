@@ -1,0 +1,81 @@
+<div class="space-y-6">
+  <!-- Top Banner -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md space-y-4">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+          <mat-icon>campaign</mat-icon>
+        </div>
+        <div>
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>Discord Webhook Build System Integrator</span>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono border border-emerald-500/30">Active Integration</span>
+          </h2>
+          <p class="text-xs text-slate-400">Sends real-time team notifications when monorepo CI/CD builds succeed or fail.</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button 
+          (click)="triggerSuccessNotification()"
+          class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-sm">
+          <mat-icon class="text-sm">check_circle</mat-icon>
+          <span>Test Success Alert</span>
+        </button>
+        <button 
+          (click)="triggerFailureNotification()"
+          class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-sm">
+          <mat-icon class="text-sm">error</mat-icon>
+          <span>Test Failure Alert</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Configuration Form -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+      <div class="md:col-span-8 space-y-1">
+        <label for="discord-webhook-url-input" class="text-xs font-mono text-slate-300 font-semibold block">Discord Channel Webhook URL</label>
+        <input 
+          id="discord-webhook-url-input"
+          [formControl]="webhookControl"
+          type="text" 
+          placeholder="https://discord.com/api/webhooks/..." 
+          class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs font-mono text-indigo-200 focus:outline-none focus:border-indigo-500 shadow-inner" />
+      </div>
+      <div class="md:col-span-4 flex items-center gap-2">
+        <button 
+          (click)="saveWebhook()"
+          class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-md">
+          <mat-icon class="text-sm">save</mat-icon>
+          <span>Save Webhook URL</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Logs Table -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">Discord Webhook Event Dispatch Logs</h3>
+      <span class="text-xs text-slate-500 font-mono">{{ store.discordLogs().length }} entries recorded</span>
+    </div>
+
+    <div class="space-y-3">
+      @for (log of store.discordLogs(); track log.id) {
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full" [class.bg-emerald-400]="log.status === 'sent'" [class.bg-rose-400]="log.status === 'failed'"></span>
+              <span class="font-bold text-white font-mono">{{ log.event }}</span>
+            </div>
+            <span class="text-[10px] text-slate-500 font-mono">{{ log.timestamp }}</span>
+          </div>
+
+          <!-- Payload Code Block -->
+          <pre class="p-3 bg-slate-900/80 rounded-lg text-[11px] font-mono text-indigo-200 overflow-x-auto border border-slate-800/80">{{ log.payload }}</pre>
+        </div>
+      }
+    </div>
+  </div>
+</div>

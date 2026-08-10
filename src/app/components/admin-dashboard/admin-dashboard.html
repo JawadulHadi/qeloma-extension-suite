@@ -1,0 +1,381 @@
+<div class="space-y-6">
+  <!-- Top Suite Executive Overview Header -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+    <div class="space-y-2">
+      <div class="flex items-center gap-2">
+        <app-qeloma-logo size="lg" subtitle="Chrome Web Store Publisher Console & User Management Dashboard"></app-qeloma-logo>
+        <span class="px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-mono border border-indigo-500/30 font-bold hidden sm:inline-block">
+          Lead Architect: Jawad-Ul-Hadi
+        </span>
+      </div>
+      <p class="text-xs text-slate-400 max-w-2xl">
+        Manage, audit, and deploy all 10 Manifest V3 Qeloma extensions from a unified pnpm monorepo. Each extension builds into a standalone Chrome Web Store ZIP package.
+      </p>
+      
+      <!-- Quick Navigation Shortcuts -->
+      <div class="flex flex-wrap items-center gap-2 pt-2 text-xs">
+        <button 
+          (click)="store.activeView.set('guide')"
+          class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer">
+          <mat-icon class="text-sm">menu_book</mat-icon>
+          <span>Deployment Guide</span>
+        </button>
+        <button 
+          (click)="store.activeView.set('checklist')"
+          class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 font-semibold border border-slate-700 flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-sm">fact_check</mat-icon>
+          <span>Interactive Checklist</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Suite Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs w-full lg:w-auto">
+      <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+        <div class="text-slate-400 text-[10px] uppercase font-semibold">Active Extensions</div>
+        <div class="text-xl font-bold font-mono text-indigo-400">10 / 10</div>
+        <div class="text-[10px] text-emerald-400 flex items-center justify-center gap-1 mt-0.5">
+          <mat-icon class="text-[10px] h-3 w-3">check_circle</mat-icon>
+          <span>All MV3 Ready</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+        <div class="text-slate-400 text-[10px] uppercase font-semibold">CI/CD Workflows</div>
+        <div class="text-xl font-bold font-mono text-emerald-400">
+          {{ store.cicdSummary().passing }}/{{ store.cicdSummary().total }} Passing
+        </div>
+        <div class="text-[10px] text-slate-400 mt-0.5">GitHub Actions</div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+        <div class="text-slate-400 text-[10px] uppercase font-semibold">Automated Tests</div>
+        <div class="text-xl font-bold font-mono text-indigo-300">
+          {{ store.cicdSummary().totalTests }} Passed
+        </div>
+        <div class="text-[10px] text-emerald-400 mt-0.5">100% Green Suite</div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+        <div class="text-slate-400 text-[10px] uppercase font-semibold">User Rating</div>
+        <div class="text-xl font-bold font-mono text-amber-300 flex items-center justify-center gap-1">
+          <span>4.9</span>
+          <mat-icon class="text-sm text-amber-400">star</mat-icon>
+        </div>
+        <div class="text-[10px] text-slate-400 mt-0.5">840+ Reviews</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live GitHub Actions CI/CD Health Control Bar -->
+  <div class="bg-[#0f172a] p-4 rounded-2xl border border-indigo-900/50 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-indigo-950 border border-indigo-500/30 text-indigo-400 flex items-center justify-center shrink-0">
+        <mat-icon class="text-xl">play_circle</mat-icon>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h3 class="text-sm font-bold text-white">GitHub Actions Live CI/CD Build Health</h3>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono border border-emerald-500/40 font-bold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            BUILD PIPELINE ACTIVE
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-400">
+          Real-time GitHub Actions workflow status, automated test results, and pnpm build verification across all 10 tools.
+        </p>
+      </div>
+    </div>
+
+    <button 
+      (click)="triggerAllBuilds()"
+      class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md shrink-0">
+      <mat-icon class="text-sm">sync</mat-icon>
+      <span>Trigger All GitHub Actions CI Builds</span>
+    </button>
+  </div>
+
+  <!-- Guidance Callout: Monorepo vs. Individual Extension Publishing -->
+  <div class="bg-indigo-950/40 border border-indigo-500/30 p-5 rounded-2xl shadow-sm space-y-3">
+    <div class="flex items-center gap-2 text-indigo-300 font-bold text-sm">
+      <mat-icon class="text-indigo-400">tips_and_updates</mat-icon>
+      <span>Chrome Web Store Launch Architecture & Guidance</span>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300">
+      <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1.5">
+        <div class="font-bold text-white flex items-center gap-2">
+          <mat-icon class="text-amber-400 text-sm">help_outline</mat-icon>
+          <span>1. Should we create 1 page or 10 separate Chrome Store additions?</span>
+        </div>
+        <p class="text-slate-300 leading-relaxed">
+          On the Chrome Web Store, extensions **must be uploaded as separate ZIP listings** (each extension gets its own Store URL, e.g. <code class="bg-slate-800 px-1 py-0.5 rounded text-indigo-300">chromewebstore.google.com/detail/qeloma-shot/...</code>). You cannot bundle multiple popups into a single CRX file.
+        </p>
+      </div>
+
+      <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1.5">
+        <div class="font-bold text-emerald-400 flex items-center gap-2">
+          <mat-icon class="text-emerald-400 text-sm">auto_awesome</mat-icon>
+          <span>2. The Best Strategy: 1 Monorepo → 10 Store ZIPs</span>
+        </div>
+        <p class="text-slate-300 leading-relaxed">
+          Instead of maintaining 10 separate code repos, we build all 10 extensions inside **1 pnpm Monorepo**. Running <code class="bg-slate-800 px-1 py-0.5 rounded text-emerald-300">pnpm build:all</code> outputs 10 individual, lightweight ZIP packages ready to upload directly to your $5 developer account!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extension Category & Status Filter Bar -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-[#0f172a] p-4 rounded-2xl border border-slate-800 shadow-sm">
+    <div class="flex items-center gap-2">
+      <span class="text-xs font-bold uppercase text-slate-400 tracking-wider flex items-center gap-1">
+        <mat-icon class="text-sm text-indigo-400">filter_list</mat-icon>
+        Filter Extensions:
+      </span>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2 text-xs">
+      <button 
+        (click)="categoryFilter.set('all')"
+        [class.bg-indigo-600]="categoryFilter() === 'all'"
+        [class.text-white]="categoryFilter() === 'all'"
+        [class.bg-slate-800]="categoryFilter() !== 'all'"
+        [class.text-slate-400]="categoryFilter() !== 'all'"
+        class="px-3 py-1.5 rounded-xl font-semibold cursor-pointer transition-all">
+        All 10 Extensions
+      </button>
+
+      <button 
+        (click)="categoryFilter.set('wedge')"
+        [class.bg-emerald-600]="categoryFilter() === 'wedge'"
+        [class.text-white]="categoryFilter() === 'wedge'"
+        [class.bg-slate-800]="categoryFilter() !== 'wedge'"
+        [class.text-slate-400]="categoryFilter() !== 'wedge'"
+        class="px-3 py-1.5 rounded-xl font-semibold cursor-pointer transition-all flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span>Wedge Fast-Track (3)</span>
+      </button>
+
+      <button 
+        (click)="categoryFilter.set('green')"
+        [class.bg-indigo-600]="categoryFilter() === 'green'"
+        [class.text-white]="categoryFilter() === 'green'"
+        [class.bg-slate-800]="categoryFilter() !== 'green'"
+        [class.text-slate-400]="categoryFilter() !== 'green'"
+        class="px-3 py-1.5 rounded-xl font-semibold cursor-pointer transition-all">
+        Green Tier (&lt;24h Review)
+      </button>
+
+      <button 
+        (click)="categoryFilter.set('amber')"
+        [class.bg-amber-600]="categoryFilter() === 'amber'"
+        [class.text-white]="categoryFilter() === 'amber'"
+        [class.bg-slate-800]="categoryFilter() !== 'amber'"
+        [class.text-slate-400]="categoryFilter() !== 'amber'"
+        class="px-3 py-1.5 rounded-xl font-semibold cursor-pointer transition-all">
+        Amber Tier (1-2 Days)
+      </button>
+    </div>
+  </div>
+
+  <!-- 10 Extensions Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    @for (ext of filteredExtensions(); track ext.id) {
+      <div class="bg-[#0f172a] rounded-2xl border border-slate-800 p-5 shadow-sm hover:border-slate-700 transition-all flex flex-col justify-between space-y-4 relative group">
+        
+        <!-- Top Extension Card Header -->
+        <div>
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 text-indigo-400 flex items-center justify-center group-hover:border-indigo-500/50 transition-colors shadow-sm">
+                <mat-icon class="text-xl">{{ ext.icon }}</mat-icon>
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-sm flex items-center gap-2">
+                  <span>{{ ext.name }}</span>
+                  @if (ext.isWedge) {
+                    <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-mono font-bold">
+                      Wedge Candidate
+                    </span>
+                  }
+                </h3>
+                <span class="text-[11px] text-slate-400">{{ ext.category }} · v1.0.0</span>
+              </div>
+            </div>
+
+            <!-- CWS Tier Badge -->
+            <span 
+              [class.bg-emerald-500\/10]="ext.permissionTier === 'Green'"
+              [class.text-emerald-400]="ext.permissionTier === 'Green'"
+              [class.border-emerald-500\/30]="ext.permissionTier === 'Green'"
+              [class.bg-amber-500\/10]="ext.permissionTier === 'Amber'"
+              [class.text-amber-300]="ext.permissionTier === 'Amber'"
+              [class.border-amber-500\/30]="ext.permissionTier === 'Amber'"
+              class="px-2 py-0.5 rounded-md border text-[10px] font-mono font-semibold flex-shrink-0">
+              {{ ext.permissionTier }} Tier
+            </span>
+          </div>
+
+          <p class="text-xs text-slate-300 leading-relaxed mb-3">
+            {{ ext.description }}
+          </p>
+
+          <!-- Permissions Badges -->
+          <div class="space-y-1">
+            <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">MV3 Permissions:</div>
+            <div class="flex flex-wrap gap-1">
+              @for (perm of ext.permissions; track perm) {
+                <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60 font-mono text-[10px]">
+                  {{ perm }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Footer Info & Actions -->
+        <div class="pt-3 border-t border-slate-800/80 space-y-3">
+          <!-- GitHub Actions CI/CD Live Health -->
+          @if (ext.cicdStatus) {
+            <div class="p-2.5 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1.5 text-[11px]">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-400 font-medium flex items-center gap-1">
+                  <mat-icon class="text-xs text-indigo-400">play_circle</mat-icon>
+                  <span>CI/CD Workflow:</span>
+                </span>
+                <span 
+                  [class.text-emerald-400]="ext.cicdStatus.status === 'success'"
+                  [class.text-amber-300]="ext.cicdStatus.status === 'building'"
+                  class="font-mono font-bold flex items-center gap-1">
+                  @if (ext.cicdStatus.status === 'building') {
+                    <mat-icon class="text-xs text-amber-300 animate-spin">sync</mat-icon>
+                  } @else {
+                    <mat-icon class="text-xs text-emerald-400">check_circle</mat-icon>
+                  }
+                  <span>{{ ext.cicdStatus.status === 'building' ? 'Building...' : 'Passing' }}</span>
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                <span>Run #{{ ext.cicdStatus.runNumber }} ({{ ext.cicdStatus.duration }})</span>
+                <span class="text-indigo-300 font-bold">main &#64; {{ ext.cicdStatus.commitHash }}</span>
+              </div>
+
+              <div class="flex items-center justify-between text-[10px] border-t border-slate-800/80 pt-1">
+                <span class="text-emerald-400 font-bold">
+                  ✓ {{ ext.cicdStatus.testsPassed }}/{{ ext.cicdStatus.totalTests }} Tests Passed
+                </span>
+                <button 
+                  (click)="triggerCiBuild(ext.id)"
+                  [disabled]="ext.cicdStatus.status === 'building'"
+                  class="text-[10px] text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-0.5 cursor-pointer disabled:opacity-50">
+                  <mat-icon class="text-[10px] h-3 w-3">sync</mat-icon>
+                  <span>Re-run CI</span>
+                </button>
+              </div>
+            </div>
+          }
+
+          <!-- CWS Deployment Status Selector -->
+          <div class="flex items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-xl border border-slate-800 text-[11px]">
+            <span class="text-slate-400 font-medium">Store Status:</span>
+            <select 
+              [value]="ext.cwsStatus || 'Draft'"
+              (change)="changeStatus(ext.id, $event)"
+              class="bg-slate-800 text-white font-semibold rounded-lg px-2 py-1 text-[11px] border border-slate-700 cursor-pointer focus:outline-none focus:border-indigo-500">
+              <option value="Draft">Draft</option>
+              <option value="Packaging">Packaging</option>
+              <option value="Submitted">Submitted</option>
+              <option value="In Review">In Review</option>
+              <option value="Published">Published</option>
+            </select>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-slate-400">
+            <span class="flex items-center gap-1 text-slate-300">
+              <mat-icon class="text-xs text-indigo-400">schedule</mat-icon>
+              <span>{{ ext.estimatedReviewTime }}</span>
+            </span>
+            <span 
+              [class.text-emerald-400]="(ext.cwsStatus || 'Draft') === 'Published'"
+              [class.text-amber-400]="(ext.cwsStatus || 'Draft') === 'In Review'"
+              [class.text-indigo-400]="(ext.cwsStatus || 'Draft') === 'Submitted'"
+              [class.text-purple-400]="(ext.cwsStatus || 'Draft') === 'Packaging'"
+              [class.text-slate-400]="(ext.cwsStatus || 'Draft') === 'Draft'"
+              class="font-mono font-bold">
+              {{ ext.cwsStatus || 'Draft' }}
+            </span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="grid grid-cols-3 gap-2 pt-1">
+            <button 
+              (click)="testInSimulator(ext.id)"
+              class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-[11px] font-semibold flex items-center justify-center gap-1 cursor-pointer transition-all shadow-sm"
+              title="Test extension popup in simulated browser">
+              <mat-icon class="text-xs">play_arrow</mat-icon>
+              <span>Simulate</span>
+            </button>
+
+            <button 
+              (click)="auditManifest(ext)"
+              class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-[11px] font-medium flex items-center justify-center gap-1 cursor-pointer transition-all"
+              title="Audit Manifest V3 JSON in CWS Linter">
+              <mat-icon class="text-xs text-indigo-400">verified</mat-icon>
+              <span>Audit</span>
+            </button>
+
+            <button 
+              (click)="downloadZip(ext.id)"
+              class="px-2.5 py-1.5 bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-500/40 text-emerald-300 rounded-xl text-[11px] font-semibold flex items-center justify-center gap-1 cursor-pointer transition-all"
+              title="Download CWS Package ZIP file">
+              <mat-icon class="text-xs">download</mat-icon>
+              <span>ZIP</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    }
+  </div>
+
+  <!-- Suite Synergy & Cross-Extension Sync Explanation -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md space-y-4">
+    <h3 class="text-sm font-bold uppercase text-slate-300 tracking-wider flex items-center gap-2">
+      <mat-icon class="text-indigo-400">hub</mat-icon>
+      <span>Cross-Extension User Perspective & Interoperability</span>
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+      <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+        <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+          <mat-icon class="text-base">swap_horizontal_circle</mat-icon>
+        </div>
+        <div class="font-bold text-white">1. Shared Sync Storage</div>
+        <p class="text-slate-300 leading-relaxed">
+          When a user installs multiple Qeloma extensions, they share <code class="text-indigo-300 font-mono">chrome.storage.sync</code> settings. Theme preferences, API keys, and focus targets automatically sync without user re-configuration.
+        </p>
+      </div>
+
+      <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+          <mat-icon class="text-base">auto_awesome</mat-icon>
+        </div>
+        <div class="font-bold text-white">2. Qeloma Clip → Lens Pipeline</div>
+        <p class="text-slate-300 leading-relaxed">
+          Selecting text or taking a screenshot region in <strong class="text-white">Qeloma Shot</strong> or <strong class="text-white">Clip</strong> triggers background messaging to pass context directly into <strong class="text-white">Qeloma Lens AI</strong> for immediate page summarization.
+        </p>
+      </div>
+
+      <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+        <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
+          <mat-icon class="text-base">extension</mat-icon>
+        </div>
+        <div class="font-bold text-white">3. Cross-Promotion in Popups</div>
+        <p class="text-slate-300 leading-relaxed">
+          Inside each popup footer, a subtle Qeloma Suite badge links users directly to the rest of the 10 extensions on the Chrome Web Store, driving organic cross-installs across your entire product line.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

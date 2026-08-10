@@ -1,0 +1,278 @@
+<div class="space-y-6">
+  <!-- Top Extension Selector Carousel / Cards -->
+  <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-800 shadow-md">
+    <div class="flex items-center justify-between mb-3.5">
+      <div>
+        <h2 class="text-base font-bold text-white flex items-center gap-2">
+          <mat-icon class="text-indigo-400">grid_view</mat-icon>
+          <span>10 Qeloma Suite Extensions</span>
+        </h2>
+        <p class="text-xs text-slate-400">Click any extension to simulate its Chrome toolbar popup and page interaction live</p>
+      </div>
+      <div class="flex items-center gap-2 text-xs">
+        <span class="px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 font-semibold">
+          Active: {{ store.activeExtension().name }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Horizontal Extension Cards Strip -->
+    <div class="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-2">
+      @for (ext of store.extensions(); track ext.id) {
+        <button 
+          (click)="store.selectExtension(ext.id)"
+          [class.bg-indigo-600]="store.selectedExtensionId() === ext.id"
+          [class.border-indigo-500]="store.selectedExtensionId() === ext.id"
+          [class.shadow-sm]="store.selectedExtensionId() === ext.id"
+          [class.bg-slate-800/60]="store.selectedExtensionId() !== ext.id"
+          [class.border-slate-700/50]="store.selectedExtensionId() !== ext.id"
+          class="p-2 rounded-xl border hover:border-slate-600 text-center cursor-pointer transition-all flex flex-col items-center gap-1 group relative">
+          
+          @if (ext.isWedge) {
+            <span class="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-[#0f172a]" title="Wedge Candidate"></span>
+          }
+
+          <div 
+            [class.text-white]="store.selectedExtensionId() === ext.id"
+            [class.text-slate-400]="store.selectedExtensionId() !== ext.id"
+            class="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center group-hover:text-white">
+            <mat-icon class="text-lg">{{ ext.icon }}</mat-icon>
+          </div>
+          <span class="text-[11px] font-semibold text-white truncate w-full">{{ ext.shortName }}</span>
+          <span class="text-[9px] text-slate-400 opacity-80 uppercase font-mono">{{ ext.permissionTier }}</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Mock Chrome Browser Window Frame -->
+  <div class="bg-[#0f172a] rounded-2xl border border-slate-800 shadow-xl overflow-hidden relative">
+    
+    <!-- Chrome Window Header & Tab Strip -->
+    <div class="bg-slate-900 px-3 pt-2.5 pb-1 border-b border-slate-800 flex items-center gap-2">
+      <!-- Window Buttons -->
+      <div class="flex items-center gap-1.5 mr-2">
+        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+        <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+        <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+      </div>
+
+      <!-- Tab Strip -->
+      <div class="flex items-center gap-1 overflow-x-auto flex-1">
+        @for (tab of store.tabs(); track tab.id) {
+          <button 
+            (click)="store.setActiveTab(tab.id)"
+            [class.bg-[#0f172a]]="store.activeTabId() === tab.id"
+            [class.text-white]="store.activeTabId() === tab.id"
+            [class.border-slate-700]="store.activeTabId() === tab.id"
+            [class.bg-slate-800/40]="store.activeTabId() !== tab.id"
+            [class.text-slate-400]="store.activeTabId() !== tab.id"
+            [class.border-slate-800]="store.activeTabId() !== tab.id"
+            class="px-3.5 py-1.5 rounded-t-xl text-xs font-medium flex items-center gap-2 border-t border-x max-w-xs truncate cursor-pointer transition-all">
+            <mat-icon class="text-sm text-indigo-400">{{ tab.favicon }}</mat-icon>
+            <span class="truncate">{{ tab.title }}</span>
+            @if (tab.isBlocked) {
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+            }
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Chrome Address Bar & Extension Action Toolbar -->
+    <div class="bg-[#0f172a] px-3.5 py-2.5 border-b border-slate-800 flex items-center justify-between gap-3 relative">
+      <!-- Navigation Buttons -->
+      <div class="flex items-center gap-1 text-slate-400">
+        <button class="p-1 hover:text-white rounded cursor-pointer"><mat-icon class="text-sm">arrow_back</mat-icon></button>
+        <button class="p-1 hover:text-white rounded cursor-pointer"><mat-icon class="text-sm">arrow_forward</mat-icon></button>
+        <button class="p-1 hover:text-white rounded cursor-pointer"><mat-icon class="text-sm">refresh</mat-icon></button>
+      </div>
+
+      <!-- Address Input Box -->
+      <div class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-1 flex items-center gap-2 text-xs text-slate-300">
+        <mat-icon class="text-emerald-400 text-sm">lock</mat-icon>
+        <span class="font-mono text-slate-200 select-all">{{ store.activeTab().url }}</span>
+        @if (store.activeTab().isBlocked) {
+          <span class="ml-auto text-[10px] px-2 py-0.5 rounded bg-red-500/20 text-red-400 font-bold uppercase">
+            Blocked by Qeloma Focus
+          </span>
+        }
+      </div>
+
+      <!-- Toolbar Extension Icons Action Bar -->
+      <div class="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+        @for (ext of store.extensions(); track ext.id) {
+          <button 
+            (click)="store.selectExtension(ext.id)"
+            [class.bg-indigo-600]="store.selectedExtensionId() === ext.id"
+            [class.text-white]="store.selectedExtensionId() === ext.id"
+            [class.text-slate-400]="store.selectedExtensionId() !== ext.id"
+            class="p-1.5 rounded-lg hover:bg-slate-800 transition-all cursor-pointer relative"
+            [title]="ext.name">
+            <mat-icon class="text-base">{{ ext.icon }}</mat-icon>
+            
+            <!-- Dynamic Badges -->
+            @if (ext.id === 'volume' && store.volumeState().volumeLevel > 100) {
+              <span class="absolute -top-1 -right-1 bg-amber-500 text-black font-bold text-[8px] px-1 rounded-full font-mono">
+                {{ store.volumeState().volumeLevel }}%
+              </span>
+            }
+            @if (ext.id === 'focus' && store.focusState().isFocusSessionActive) {
+              <span class="absolute -top-1 -right-1 bg-red-500 text-white font-bold text-[8px] w-2 h-2 rounded-full animate-pulse"></span>
+            }
+          </button>
+        }
+      </div>
+
+      <!-- Toggle Popup Button -->
+      <button 
+        (click)="store.togglePopup()"
+        class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-sm transition-all">
+        <mat-icon class="text-sm">launch</mat-icon>
+        <span>{{ store.isPopupOpen() ? 'Hide Popup' : 'Show Popup' }}</span>
+      </button>
+
+      <!-- Floating Extension Popup Container Overlay (Anchored to Toolbar) -->
+      @if (store.isPopupOpen()) {
+        <div class="absolute right-3 top-12 z-40 animate-in fade-in slide-in-from-top-2 duration-200">
+          @switch (store.selectedExtensionId()) {
+            @case ('night') { <app-popup-night /> }
+            @case ('shot') { <app-popup-shot /> }
+            @case ('volume') { <app-popup-volume /> }
+            @case ('focus') { <app-popup-focus /> }
+            @case ('timebox') { <app-popup-timebox /> }
+            @case ('webtime') { <app-popup-webtime /> }
+            @case ('inspect') { <app-popup-inspect /> }
+            @case ('clip-lens') { <app-popup-clip-lens /> }
+            @case ('reader') { <app-popup-reader /> }
+            @case ('palette') { <app-popup-palette /> }
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Webpage Content Canvas Viewport -->
+    <div 
+      class="min-h-[480px] p-6 bg-[#090d16] relative overflow-hidden transition-all duration-300"
+      [style.filter]="nightFilterStyle">
+
+      <!-- Case 1: Site Blocked Notice (Qeloma Focus) -->
+      @if (store.activeTab().isBlocked) {
+        <div class="absolute inset-0 bg-[#090d16] z-30 flex flex-col items-center justify-center text-center p-8">
+          <div class="w-16 h-16 rounded-2xl bg-red-500/20 text-red-400 flex items-center justify-center mb-4">
+            <mat-icon class="text-4xl">block</mat-icon>
+          </div>
+          <h2 class="text-xl font-bold text-white mb-2">Access Restricted by Qeloma Focus</h2>
+          <p class="text-slate-400 text-sm max-w-md mb-6">
+            <span class="font-mono text-red-400 font-semibold">{{ store.activeTab().domain }}</span> is currently blocked during your 25-minute Pomodoro focus session.
+          </p>
+          <button 
+            (click)="store.removeBlockedDomain(store.activeTab().domain)"
+            class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer shadow-lg">
+            <mat-icon class="text-sm">lock_open</mat-icon>
+            <span>Unblock Domain Temporarily</span>
+          </button>
+        </div>
+      }
+
+      <!-- Case 2: Reader Mode Overlay (Qeloma Reader) -->
+      @if (store.readerState().active) {
+        <div 
+          [class.bg-[#2D2A26]]="store.readerState().theme === 'sepia'"
+          [class.text-amber-100]="store.readerState().theme === 'sepia'"
+          [class.bg-[#0f172a]]="store.readerState().theme === 'dark'"
+          [class.text-white]="store.readerState().theme === 'dark'"
+          [class.bg-slate-50]="store.readerState().theme === 'light'"
+          [class.text-slate-900]="store.readerState().theme === 'light'"
+          class="p-8 rounded-2xl max-w-2xl mx-auto shadow-xl space-y-4 border border-slate-800">
+          <h1 class="text-2xl font-bold leading-tight">{{ store.activeTab().title }}</h1>
+          <p class="text-xs opacity-75 font-mono">By Qeloma Reader · 4 min read</p>
+          <hr class="opacity-20" />
+          <p class="leading-relaxed" [style.fontSize.px]="store.readerState().fontSize">
+            {{ store.activeTab().contentSnippet }}
+          </p>
+          <p class="leading-relaxed opacity-90" [style.fontSize.px]="store.readerState().fontSize">
+            Building browser extensions with Manifest V3 requires decoupling background service workers from persistent UI states. Using WXT and pnpm workspaces ensures modular shared packages across dark mode, screenshot capture, and AI clip analyzers.
+          </p>
+        </div>
+      } @else {
+        <!-- Standard Simulated Webpage Content -->
+        <div class="max-w-4xl mx-auto space-y-6 text-slate-200" (mouseup)="onTextSelect()">
+          
+          <!-- Page Article Banner -->
+          <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-lg space-y-3">
+            <div class="flex items-center justify-between text-xs text-slate-400">
+              <span class="px-2.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 font-mono border border-indigo-500/20 font-semibold">{{ store.activeTab().domain }}</span>
+              <span>Updated 12 mins ago</span>
+            </div>
+
+            <h1 class="text-xl font-bold text-white">{{ store.activeTab().title }}</h1>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              {{ store.activeTab().contentSnippet }}
+            </p>
+
+            <!-- Text Selection Helper for Clip -> Lens -->
+            @if (store.selectedExtensionId() === 'clip-lens') {
+              <div class="bg-indigo-950/40 border border-indigo-500/40 p-3.5 rounded-xl flex items-center justify-between text-xs">
+                <span class="text-indigo-300 flex items-center gap-1.5 font-medium">
+                  <mat-icon class="text-sm">auto_awesome</mat-icon>
+                  Select text on this page or use article snippet for AI Lens analysis
+                </span>
+                <button 
+                  (click)="sendClipToLens()"
+                  class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold flex items-center gap-1 cursor-pointer shadow-sm">
+                  <span>Send to Lens AI</span>
+                </button>
+              </div>
+            }
+          </div>
+
+          <!-- Simulated Audio Player for Qeloma Volume Test -->
+          @if (store.selectedExtensionId() === 'volume') {
+            <div class="bg-[#0f172a] p-4 rounded-2xl border border-amber-500/30 flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                  <mat-icon class="text-2xl">music_note</mat-icon>
+                </div>
+                <div>
+                  <div class="text-sm font-bold text-white">Audio Stream - Tab Audio Test</div>
+                  <div class="text-xs text-slate-400">GainNode Boost: {{ store.volumeState().volumeLevel }}%</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="w-9 h-9 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold cursor-pointer">
+                  <mat-icon>play_arrow</mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+
+          <!-- Simulated Crop Rectangle Overlay for Qeloma Shot -->
+          @if (store.selectedExtensionId() === 'shot') {
+            <div class="relative border-2 border-dashed border-indigo-500 bg-indigo-500/10 p-4 rounded-2xl my-4 text-center">
+              <span class="bg-indigo-600 text-white px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+                Region Capture Frame
+              </span>
+              <p class="text-xs text-slate-300 mt-2">Drag bounding handles or click Capture in Shot popup</p>
+            </div>
+          }
+
+          <!-- SEO Inspector Overlay Highlights for Qeloma Inspect -->
+          @if (store.selectedExtensionId() === 'inspect') {
+            <div class="bg-sky-950/40 border border-sky-500/30 p-4 rounded-2xl space-y-2 text-xs">
+              <div class="text-sky-300 font-bold uppercase text-[10px] flex items-center gap-1">
+                <mat-icon class="text-sm">search</mat-icon> On-Page Metadata Detected
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-[11px] font-mono">
+                <div class="bg-black/30 p-2 rounded">OG Title: {{ store.activeTab().meta.title }}</div>
+                <div class="bg-black/30 p-2 rounded">Headings: {{ store.activeTab().meta.headings.join(', ') }}</div>
+              </div>
+            </div>
+          }
+
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

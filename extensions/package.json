@@ -1,0 +1,21 @@
+{
+  "name": "qeloma-extensions",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build:all": "node scripts/build-all.mjs",
+    "preflight": "node scripts/cws-preflight.mjs",
+    "release": "node scripts/build-all.mjs && node scripts/cws-preflight.mjs",
+    "icons": "node scripts/generate-icons.mjs"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.287",
+    "@types/pngjs": "^6.0.5",
+    "pngjs": "^7.0.0",
+    "typescript": "^5.7.0",
+    "wxt": "^0.20.6"
+  }
+}

@@ -1,0 +1,227 @@
+<div class="space-y-6">
+  <!-- Top Banner -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-mono border border-indigo-500/30 font-semibold">
+          pnpm workspaces + WXT
+        </span>
+        <span class="text-xs text-slate-400">qeloma-extensions/</span>
+      </div>
+      <div class="flex items-center gap-2 mt-0.5">
+        <h2 class="text-xl font-bold text-white">Monorepo Architecture & Dependency Graph</h2>
+        <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-[10px] font-mono border border-indigo-500/30 font-bold">
+          Lead Architect: Jawad-Ul-Hadi
+        </span>
+      </div>
+      <p class="text-xs text-slate-400 max-w-2xl mt-1">
+        Production-grade pnpm workspaces + WXT architecture designed by Lead Architect Jawad-Ul-Hadi. Explore source files or interact with the D3.js dependency graph visualization mapping shared packages to all 10 extensions.
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <!-- Sub Tab Switcher -->
+      <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
+        <button 
+          (click)="setSubTab('files')"
+          [class.bg-indigo-600]="activeSubTab() === 'files'"
+          [class.text-white]="activeSubTab() === 'files'"
+          [class.text-slate-400]="activeSubTab() !== 'files'"
+          class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-sm">code</mat-icon>
+          <span>Source Code</span>
+        </button>
+        <button 
+          (click)="setSubTab('graph')"
+          [class.bg-indigo-600]="activeSubTab() === 'graph'"
+          [class.text-white]="activeSubTab() === 'graph'"
+          [class.text-slate-400]="activeSubTab() !== 'graph'"
+          class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-sm">hub</mat-icon>
+          <span>D3 Dependency Graph</span>
+        </button>
+        <button 
+          (click)="setSubTab('terminal')"
+          [class.bg-indigo-600]="activeSubTab() === 'terminal'"
+          [class.text-white]="activeSubTab() === 'terminal'"
+          [class.text-slate-400]="activeSubTab() !== 'terminal'"
+          class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-sm">terminal</mat-icon>
+          <span>Integrated Terminal</span>
+        </button>
+        <button 
+          (click)="setSubTab('shared-pkgs')"
+          [class.bg-indigo-600]="activeSubTab() === 'shared-pkgs'"
+          [class.text-white]="activeSubTab() === 'shared-pkgs'"
+          [class.text-slate-400]="activeSubTab() !== 'shared-pkgs'"
+          class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-sm">inventory_2</mat-icon>
+          <span>Shared Package READMEs</span>
+        </button>
+        <button 
+          (click)="setSubTab('telemetry')"
+          [class.bg-indigo-600]="activeSubTab() === 'telemetry'"
+          [class.text-white]="activeSubTab() === 'telemetry'"
+          [class.text-slate-400]="activeSubTab() !== 'telemetry'"
+          class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-sm">analytics</mat-icon>
+          <span>Telemetry Dashboard</span>
+        </button>
+        <button 
+          (click)="setSubTab('discord')"
+          [class.bg-indigo-600]="activeSubTab() === 'discord'"
+          [class.text-white]="activeSubTab() === 'discord'"
+          [class.text-slate-400]="activeSubTab() !== 'discord'"
+          class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-sm">campaign</mat-icon>
+          <span>Discord Webhook</span>
+        </button>
+        <button 
+          (click)="setSubTab('github-webhook')"
+          [class.bg-indigo-600]="activeSubTab() === 'github-webhook'"
+          [class.text-white]="activeSubTab() === 'github-webhook'"
+          [class.text-slate-400]="activeSubTab() !== 'github-webhook'"
+          class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-sm">hub</mat-icon>
+          <span>GitHub Webhooks</span>
+        </button>
+        <button 
+          (click)="setSubTab('social-card')"
+          [class.bg-indigo-600]="activeSubTab() === 'social-card'"
+          [class.text-white]="activeSubTab() === 'social-card'"
+          [class.text-slate-400]="activeSubTab() !== 'social-card'"
+          class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer">
+          <mat-icon class="text-sm">share</mat-icon>
+          <span>Social Card Preview</span>
+        </button>
+      </div>
+
+      <button 
+        (click)="downloadMonorepoZip()"
+        class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-semibold flex items-center gap-2 cursor-pointer border border-slate-700 shadow-sm transition-all">
+        <mat-icon class="text-sm">folder_zip</mat-icon>
+        <span>Download Suite ZIP</span>
+      </button>
+    </div>
+  </div>
+
+  @if (activeSubTab() === 'terminal') {
+    <!-- Integrated Terminal View -->
+    <app-integrated-terminal />
+  } @else if (activeSubTab() === 'shared-pkgs') {
+    <!-- Shared Packages Markdown README View -->
+    <app-shared-packages-readme />
+  } @else if (activeSubTab() === 'telemetry') {
+    <!-- Telemetry & Build Metrics Dashboard -->
+    <app-telemetry-dashboard />
+  } @else if (activeSubTab() === 'discord') {
+    <!-- Discord Webhook Configuration Module -->
+    <app-discord-webhook-config />
+  } @else if (activeSubTab() === 'github-webhook') {
+    <!-- GitHub Real-time Webhook Listener -->
+    <app-github-webhook-listener />
+  } @else if (activeSubTab() === 'social-card') {
+    <!-- Social Media Card Previewer & OpenGraph Meta Tag Generator -->
+    <app-social-preview-card />
+  } @else if (activeSubTab() === 'graph') {
+    <!-- D3 Dependency Graph View -->
+    <app-dependency-graph />
+  } @else {
+    <!-- Main Explorer Split Screen -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    
+    <!-- Left File Tree Sidebar -->
+    <div class="lg:col-span-4 bg-[#0f172a] p-4 rounded-2xl border border-slate-800 shadow-md space-y-3">
+      <h3 class="text-xs font-bold uppercase text-slate-400 tracking-wider flex items-center justify-between">
+        <span>File Tree</span>
+        <mat-icon class="text-sm text-indigo-400">folder_open</mat-icon>
+      </h3>
+
+      <div class="space-y-1 text-xs font-mono">
+        @for (item of store.monorepoFiles(); track item.path) {
+          @if (item.type === 'file') {
+            <button 
+              (click)="selectFile(item)"
+              [class.bg-indigo-600/20]="selectedFile().path === item.path"
+              [class.border-indigo-500/40]="selectedFile().path === item.path"
+              [class.text-indigo-300]="selectedFile().path === item.path"
+              [class.text-slate-400]="selectedFile().path !== item.path"
+              class="w-full text-left px-2.5 py-1.5 rounded-lg border border-transparent hover:bg-slate-800 flex items-center gap-2 cursor-pointer transition-all">
+              <mat-icon class="text-sm text-indigo-400">description</mat-icon>
+              <span>{{ item.name }}</span>
+            </button>
+          } @else {
+            <div class="space-y-1">
+              <div class="px-2.5 py-1 text-slate-300 font-bold flex items-center gap-2">
+                <mat-icon class="text-sm text-amber-400">folder</mat-icon>
+                <span>{{ item.name }}/</span>
+              </div>
+              <div class="ml-4 space-y-1 border-l border-slate-800 pl-2">
+                @for (child of item.children; track child.path) {
+                  @if (child.type === 'file') {
+                    <button 
+                      (click)="selectFile(child)"
+                      [class.bg-indigo-600/20]="selectedFile().path === child.path"
+                      [class.border-indigo-500/40]="selectedFile().path === child.path"
+                      [class.text-indigo-300]="selectedFile().path === child.path"
+                      [class.text-slate-400]="selectedFile().path !== child.path"
+                      class="w-full text-left px-2 py-1 rounded-lg border border-transparent hover:bg-slate-800 flex items-center gap-2 cursor-pointer transition-all">
+                      <mat-icon class="text-sm text-indigo-400">description</mat-icon>
+                      <span>{{ child.name }}</span>
+                    </button>
+                  } @else {
+                    <div class="space-y-1">
+                      <div class="px-2 py-0.5 text-slate-400 font-semibold flex items-center gap-1.5">
+                        <mat-icon class="text-xs text-amber-400">folder_open</mat-icon>
+                        <span>{{ child.name }}/</span>
+                      </div>
+                      <div class="ml-3 border-l border-slate-800 pl-2 space-y-1">
+                        @for (sub of child.children; track sub.path) {
+                          <button 
+                            (click)="selectFile(sub)"
+                            [class.bg-indigo-600/20]="selectedFile().path === sub.path"
+                            [class.border-indigo-500/40]="selectedFile().path === sub.path"
+                            [class.text-indigo-300]="selectedFile().path === sub.path"
+                            [class.text-slate-400]="selectedFile().path !== sub.path"
+                            class="w-full text-left px-2 py-1 rounded-lg border border-transparent hover:bg-slate-800 flex items-center gap-2 cursor-pointer transition-all">
+                            <mat-icon class="text-sm text-sky-400">description</mat-icon>
+                            <span>{{ sub.name }}</span>
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Right Code Inspector Canvas -->
+    <div class="lg:col-span-8 bg-[#0f172a] rounded-2xl border border-slate-800 shadow-md overflow-hidden flex flex-col">
+      <!-- File Header Bar -->
+      <div class="bg-slate-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2 font-mono text-xs text-slate-200">
+          <mat-icon class="text-sm text-indigo-400">code</mat-icon>
+          <span>{{ selectedFile().path }}</span>
+        </div>
+        <button 
+          (click)="copyCode()"
+          class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-medium flex items-center gap-1 cursor-pointer">
+          <mat-icon class="text-sm">content_copy</mat-icon>
+          <span>Copy File Code</span>
+        </button>
+      </div>
+
+      <!-- Code Content Display -->
+      <div class="p-4 bg-[#090d16] flex-1 overflow-x-auto font-mono text-xs text-slate-300 leading-relaxed">
+        <pre class="whitespace-pre"><code>{{ selectedFile().content }}</code></pre>
+      </div>
+    </div>
+
+  </div>
+}
+</div>

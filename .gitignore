@@ -1,0 +1,60 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Env variables
+.env*
+!.env.example
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Extension build output (WXT). Also covered by extensions/.gitignore; repeated
+# here so a build run from the repo root can never stage these.
+.output/
+.wxt/
+extensions/release/
+
+# Local exports and scratch. The Claude artifact export is a personal dump of
+# internal architecture and security notes for other products — it is not part
+# of this codebase and must not travel with it.
+claude-artifacts-export/
+claude-artifacts-export-*/
+claude-artifacts-export-*.zip

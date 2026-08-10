@@ -1,0 +1,6 @@
+{
+  "name": "Qeloma Extension Suite",
+  "description": "Monorepo developer hub, interactive live simulators, Manifest V3 generator, CWS linter, and productivity extension suite.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

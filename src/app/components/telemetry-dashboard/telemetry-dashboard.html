@@ -1,0 +1,202 @@
+<div class="space-y-6">
+  <!-- Top Telemetry Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-800 shadow-md space-y-2">
+      <span class="text-xs text-slate-400 font-mono">Avg Build Duration</span>
+      <div class="flex items-baseline gap-2">
+        <span class="text-2xl font-bold text-white font-mono">13.8s</span>
+        <span class="text-xs text-emerald-400 font-bold flex items-center">
+          <mat-icon class="text-sm">arrow_downward</mat-icon> 51% faster
+        </span>
+      </div>
+      <p class="text-[11px] text-slate-500">pnpm cache & esbuild optimization</p>
+    </div>
+
+    <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-800 shadow-md space-y-2">
+      <span class="text-xs text-slate-400 font-mono">Avg Extension Bundle</span>
+      <div class="flex items-baseline gap-2">
+        <span class="text-2xl font-bold text-white font-mono">38.4 KB</span>
+        <span class="text-xs text-emerald-400 font-bold flex items-center">
+          <mat-icon class="text-sm">arrow_downward</mat-icon> 43% reduced
+        </span>
+      </div>
+      <p class="text-[11px] text-slate-500">Tree-shaken @qeloma/ui primitives</p>
+    </div>
+
+    <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-800 shadow-md space-y-2">
+      <span class="text-xs text-slate-400 font-mono">CI Test Pass Rate</span>
+      <div class="flex items-baseline gap-2">
+        <span class="text-2xl font-bold text-emerald-400 font-mono">100%</span>
+        <span class="text-xs text-emerald-400 font-mono">180/180 tests</span>
+      </div>
+      <p class="text-[11px] text-slate-500">Zero breaking MV3 regressions</p>
+    </div>
+
+    <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-800 shadow-md space-y-2">
+      <span class="text-xs text-slate-400 font-mono">Monorepo Packages</span>
+      <div class="flex items-baseline gap-2">
+        <span class="text-2xl font-bold text-indigo-300 font-mono">10 MV3 + 5 Shared</span>
+      </div>
+      <p class="text-[11px] text-slate-500">WXT + Angular 21 architecture</p>
+    </div>
+  </div>
+
+  <!-- Core Web Vitals Performance Section -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md space-y-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-bold text-white font-mono flex items-center gap-2">
+          <span>Core Web Vitals Hub Metrics</span>
+          <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-mono border border-emerald-500/30 font-bold">Good / Passing</span>
+        </h3>
+        <p class="text-xs text-slate-400">Monitoring Largest Contentful Paint (LCP) & Cumulative Layout Shift (CLS) for marketing hub</p>
+      </div>
+      <span class="text-xs font-mono text-slate-500">Google PageSpeed Insights API v5</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      <!-- LCP -->
+      <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-400 font-mono font-semibold">LCP</span>
+          <span class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px] font-bold">0.82s</span>
+        </div>
+        <p class="text-[11px] font-bold text-white font-mono">Largest Contentful Paint</p>
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div class="bg-emerald-400 h-full rounded-full" style="width: 25%"></div>
+        </div>
+        <p class="text-[10px] text-slate-500 font-mono">&lt; 2.5s threshold (Good)</p>
+      </div>
+
+      <!-- CLS -->
+      <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-400 font-mono font-semibold">CLS</span>
+          <span class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px] font-bold">0.012</span>
+        </div>
+        <p class="text-[11px] font-bold text-white font-mono">Cumulative Layout Shift</p>
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div class="bg-emerald-400 h-full rounded-full" style="width: 12%"></div>
+        </div>
+        <p class="text-[10px] text-slate-500 font-mono">&lt; 0.1 threshold (Good)</p>
+      </div>
+
+      <!-- INP -->
+      <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-400 font-mono font-semibold">INP</span>
+          <span class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px] font-bold">48 ms</span>
+        </div>
+        <p class="text-[11px] font-bold text-white font-mono">Interaction to Next Paint</p>
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div class="bg-emerald-400 h-full rounded-full" style="width: 24%"></div>
+        </div>
+        <p class="text-[10px] text-slate-500 font-mono">&lt; 200ms threshold (Good)</p>
+      </div>
+
+      <!-- FID -->
+      <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-400 font-mono font-semibold">FID</span>
+          <span class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px] font-bold">12 ms</span>
+        </div>
+        <p class="text-[11px] font-bold text-white font-mono">First Input Delay</p>
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div class="bg-emerald-400 h-full rounded-full" style="width: 12%"></div>
+        </div>
+        <p class="text-[10px] text-slate-500 font-mono">&lt; 100ms threshold (Good)</p>
+      </div>
+
+      <!-- TTFB -->
+      <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-400 font-mono font-semibold">TTFB</span>
+          <span class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px] font-bold">140 ms</span>
+        </div>
+        <p class="text-[11px] font-bold text-white font-mono">Time to First Byte</p>
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div class="bg-emerald-400 h-full rounded-full" style="width: 18%"></div>
+        </div>
+        <p class="text-[10px] text-slate-500 font-mono">&lt; 800ms threshold (Good)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historical Release Performance Trends -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md space-y-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-bold text-white font-mono">Release Performance Improvement Telemetry</h3>
+        <p class="text-xs text-slate-400">Tracking build times and bundle sizes across monorepo releases</p>
+      </div>
+      <span class="px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-xs font-mono border border-indigo-500/30 font-semibold">
+        Monorepo Efficiency Trends
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      @for (rel of store.buildTelemetryHistory(); track rel.release) {
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <span class="text-xs font-bold text-white font-mono">{{ rel.release }}</span>
+            <span class="text-[10px] text-slate-500 font-mono">{{ rel.date }}</span>
+          </div>
+          <div class="space-y-1.5 text-xs font-mono">
+            <div class="flex justify-between">
+              <span class="text-slate-400">Avg Build Time:</span>
+              <span class="text-indigo-300 font-bold">{{ rel.avgBuildTimeSec }}s</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Avg Bundle Size:</span>
+              <span class="text-emerald-300 font-bold">{{ rel.avgBundleSizeKb }} KB</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Test Pass Rate:</span>
+              <span class="text-amber-300 font-bold">{{ rel.passRate }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Per-Extension Telemetry Table -->
+  <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 shadow-md space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">Per-Extension Build Metrics & Efficiency Ratings</h3>
+      <span class="text-xs text-slate-500 font-mono">10 packages tracked</span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs font-mono">
+        <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+          <tr>
+            <th class="p-3">Extension Package</th>
+            <th class="p-3">Build Duration</th>
+            <th class="p-3">Output Bundle Size</th>
+            <th class="p-3">Vite Modules</th>
+            <th class="p-3 text-right">Efficiency Score</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800/60">
+          @for (item of store.extensionTelemetryList(); track item.id) {
+            <tr class="hover:bg-slate-900/40 transition-all">
+              <td class="p-3 font-bold text-white flex items-center gap-2">
+                <mat-icon class="text-indigo-400 text-sm">extension</mat-icon>
+                <span>{{ item.name }}</span>
+              </td>
+              <td class="p-3 text-indigo-300 font-bold">{{ item.buildTime }}</td>
+              <td class="p-3 text-emerald-300 font-bold">{{ item.bundleSize }}</td>
+              <td class="p-3 text-slate-400">{{ item.viteModules }} modules</td>
+              <td class="p-3 text-right">
+                <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/30">
+                  {{ item.efficiencyScore }}/100
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
